@@ -9,18 +9,25 @@ import {
   HiClipboardList,
   HiLogin,
   HiUserAdd,
+  HiLogout,
 } from "react-icons/hi";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { FaBookOpen } from "react-icons/fa";
+import { AuthContext } from "../../contexts/AuthContexts/AuthContext";
+import { handleLogout } from "../../helpers/authHelper"; 
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
+  const navigate = useNavigate();
   console.log(motion)
+  const { user } = useContext(AuthContext);
+
   const linkClass =
     "flex items-center gap-2 font-medium text-green-700 hover:text-green-900 transition-colors";
 
-  const menuItems = (
+  const commonLinks = (
     <>
       <li>
         <Link to="/" className={linkClass}>
@@ -42,10 +49,15 @@ const Navbar = () => {
           <HiClipboardList /> Borrowed
         </Link>
       </li>
+    </>
+  );
+
+  const authLinks = !user ? (
+    <>
       <li>
         <Link
-          to="/signin"
-          className="btn btn-sm bg-green-700 hover:bg-green-800 text-white border-none flex items-center gap-2"
+          to="/login"
+          className="btn btn-sm bg-green-700 hover:bg-green-800 text-white border-none flex gap-2"
         >
           <HiLogin /> Login
         </Link>
@@ -59,7 +71,32 @@ const Navbar = () => {
         </Link>
       </li>
     </>
+  ) : (
+    <>
+      <li className="relative group flex items-center">
+        <div className="self-center overflow-hidden">
+          <img
+            src={user?.photoURL || "/default-avatar.png"}
+            alt={user?.displayName || "User"}
+            className="object-cover rounded-full w-12 h-12"
+          />
+        </div>
+        <div className="absolute left-1/2 -translate-x-1/2 top-[115%] opacity-0 group-hover:opacity-100 bg-white text-green-700 text-sm px-2 py-1 rounded shadow transition-opacity whitespace-nowrap z-50">
+          {user.displayName || "Anonymous"}
+        </div>
+      </li>
+      <li>
+        <button
+          onClick={() => handleLogout(navigate)}
+          className="btn btn-sm bg-red-600 text-white hover:bg-red-700 border-none flex items-center gap-2"
+        >
+          <HiLogout /> Logout
+        </button>
+      </li>
+    </>
   );
+  
+
 
   return (
     <div className="bg-white shadow-md">
@@ -76,7 +113,10 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal gap-4">{menuItems}</ul>
+          <ul className="menu menu-horizontal items-center gap-4">
+            {commonLinks}
+            {authLinks}
+          </ul>
         </div>
 
         {/* Mobile Hamburger */}
@@ -112,7 +152,10 @@ const Navbar = () => {
                     <HiOutlineX size={24} />
                   </button>
                 </div>
-                <ul className="menu menu-vertical gap-2">{menuItems}</ul>
+                <ul className="menu menu-vertical gap-2">
+                  {commonLinks}
+                  {authLinks}
+                </ul>
               </motion.div>
             </>
           )}
