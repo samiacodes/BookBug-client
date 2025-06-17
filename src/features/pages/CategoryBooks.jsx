@@ -9,7 +9,9 @@ const CategoryBooks = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/books?category=${categoryName}`)
+      .get(
+        `https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books?category=${categoryName}`
+      )
       .then((res) => setBooks(res.data))
       .catch((err) => console.error("Error loading books", err));
   }, [categoryName]);
@@ -31,7 +33,7 @@ const CategoryBooks = () => {
             >
               <img
                 src={book.image}
-                alt={book.title}
+                alt={book.name}
                 className="w-full h-52 object-cover rounded"
               />
               <h3 className="text-xl font-semibold mt-3">{book.title}</h3>

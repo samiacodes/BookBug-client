@@ -11,7 +11,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/books")
+      .get("https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books")
       .then((res) => setBooks(res.data))
       .catch((err) => console.error("Book loading error:", err));
   }, []);
