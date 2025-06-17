@@ -10,7 +10,7 @@ const UpdateBook = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/books/${id}`)
+      .get(`https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books/${id}`)
       .then((res) => {
         setBook(res.data);
         console.log("Loaded book:", res.data); // Log the loaded book data
@@ -20,7 +20,6 @@ const UpdateBook = () => {
         toast.error("Failed to load book.");
       });
   }, [id]);
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,16 +35,18 @@ const UpdateBook = () => {
     }
 
     try {
-      await axios.put(`http://localhost:3000/books/${id}`, book);
+      await axios.put(
+        `https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books/${id}`,
+        book
+      );
       toast.success("Book updated successfully!");
       navigate("/all-books");
     } catch (error) {
-      console.error("Axios error:", error.response || error); 
+      console.error("Axios error:", error.response || error);
       console.error("Error during book update:", error);
       toast.error("Failed to update book.");
     }
   };
-  
 
   if (!book) return <p className="text-center py-10">Loading book data...</p>;
 
