@@ -4,31 +4,70 @@ import { useAuth } from "../hooks/useAuth";
 
 const BorrowModal = ({ book, onClose, onBorrowSuccess }) => {
   const { user } = useAuth();
+  const [returnDate, setReturnDate] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleBorrow = async () => {
+    if (!returnDate) {
+      setMessage("Please select a return date");
+      return;
+    }
+
     setLoading(true);
+
     try {
-      const res = await axios.post("http://localhost:3000/borrow", {
-        userEmail: user.email,
-        bookId: book._id,
-      });
+      // Step 1: Check if the user has already borrowed this book
+      const idToken = await user.getIdToken();
 
-      setMessage(res.data.message || "Book borrowed!");
+      const borrowedCheckRes = await axios.get(
+        `https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/borrowed?email=${user.email}`,
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        }
+      );
 
-      
+      const alreadyBorrowed = borrowedCheckRes.data.find(
+        (borrowedBook) => borrowedBook.bookId._id === book._id
+      );
+
+      if (alreadyBorrowed) {
+        setMessage("You have already borrowed this book!");
+        setLoading(false);
+        return;
+      }
+
+      // Step 2: Add to Borrowed list and decrease book quantity
+      const res = await axios.post(
+        `https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/borrow`,
+        {
+          userName: user.displayName,
+          userEmail: user.email,
+          returnDate,
+          bookId: book._id,
+          bookName: book.name,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        }
+      );
+
+      setMessage(res.data.message || "Book borrowed successfully!");
+
       if (onBorrowSuccess) {
         onBorrowSuccess();
       }
 
-      
       setTimeout(() => {
         onClose();
       }, 1000);
     } catch (err) {
-      setMessage("Failed to borrow book");
-      console.error(err);
+      setMessage("Failed to borrow the book. Please try again.");
+      console.error("Error while borrowing: ", err);
     } finally {
       setLoading(false);
     }
@@ -40,6 +79,29 @@ const BorrowModal = ({ book, onClose, onBorrowSuccess }) => {
         <h2 className="text-xl font-bold mb-2">{book.name}</h2>
         <p>Author: {book.author}</p>
         <p>Category: {book.category}</p>
+
+        {/* Display user info */}
+        <input
+          type="text"
+          value={user.displayName}
+          disabled
+          className="input input-bordered w-full my-2"
+        />
+        <input
+          type="email"
+          value={user.email}
+          disabled
+          className="input input-bordered w-full mb-2"
+        />
+
+        {/* Return Date Picker */}
+        <input
+          type="date"
+          required
+          value={returnDate}
+          onChange={(e) => setReturnDate(e.target.value)}
+          className="input input-bordered w-full mb-2"
+        />
 
         <div className="mt-4 flex flex-col gap-2">
           <button
@@ -58,9 +120,7 @@ const BorrowModal = ({ book, onClose, onBorrowSuccess }) => {
           </button>
         </div>
 
-        {message && (
-          <p className="mt-3 text-center text-green-600">{message}</p>
-        )}
+        {message && <p className="mt-3 text-center text-red-600">{message}</p>}
       </div>
     </div>
   );
