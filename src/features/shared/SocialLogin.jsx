@@ -8,8 +8,9 @@ const SocialLogin = ({ from }) => {
   const { signInWithGoogle } = use(AuthContext);
   const handleGoogleSignIn = () => {
     signInWithGoogle()
-      .then((result) => {
-        console.log(result);
+      .then(async (result) => {
+        const token = await result.user.getIdToken();
+        localStorage.setItem("token", token);
         toast.success("Login successful!");
         navigate(from || "/");
       })
