@@ -31,7 +31,7 @@ const SocialLogin = ({ from }) => {
       {/* Google Sign-In Button */}
       <button
         onClick={handleGoogleSignIn}
-        className="btn btn-outline btn-success text-gray-500 w-full flex items-center justify-center gap-2"
+        className="btn btn-outline btn-success text-black w-full flex items-center justify-center gap-2"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
