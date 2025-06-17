@@ -43,15 +43,13 @@ const Register = () => {
     }
 
     createUserWithEmailAndPassword(auth, email, password)
-      .then((res) => {
-        return updateProfile(res.user, {
-          displayName: name,
-          photoURL,
-        }).then(() => {
-          setUser(res.user);
-          toast.success("Registration successful!");
-          navigate("/");
-        });
+      .then(async (res) => {
+        await updateProfile(res.user, { displayName: name, photoURL });
+        const token = await res.user.getIdToken();
+        localStorage.setItem("token", token);
+        setUser(res.user);
+        toast.success("Registration successful!");
+        navigate("/");
       })
       .catch((err) => {
         setError(err.message);
@@ -112,7 +110,6 @@ const Register = () => {
             </button>
           </form>
 
-          
           <SocialLogin />
 
           <p className="text-sm text-center mt-2">

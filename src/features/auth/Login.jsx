@@ -27,7 +27,9 @@ const Login = () => {
     const { email, password } = formData;
 
     signInWithEmailAndPassword(auth, email, password)
-      .then((res) => {
+      .then(async (res) => {
+        const token = await res.user.getIdToken();
+        localStorage.setItem("token", token);
         setUser(res.user);
         toast.success("Login successful!");
         navigate("/");
