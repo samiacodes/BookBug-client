@@ -8,7 +8,7 @@ const BookDetails = () => {
   const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/books/${id}`)
+      .get(`https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books/${id}`)
       .then((res) => setBook(res.data))
       .catch((err) => console.error("Failed to load book:", err));
   }, [id]);
@@ -24,7 +24,7 @@ const BookDetails = () => {
         alt={book.title}
         className="w-full h-80 object-cover rounded"
       />
-      <h2 className="text-3xl font-bold mt-4">{book.title}</h2>
+      <h2 className="text-3xl font-bold mt-4">{book.name}</h2>
       <p className="text-gray-600 mt-1">Author: {book.author}</p>
       <p className="mt-1">Category: {book.category}</p>
       <p className="mt-1">Rating: ⭐ {book.rating}</p>
