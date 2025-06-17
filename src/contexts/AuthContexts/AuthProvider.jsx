@@ -16,33 +16,68 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
-  const createUser = (email, password) => {
+  // Create user (Sign up)
+  const createUser = async (email, password) => {
     setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password);
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.error("Error creating user:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const signInUser = (email, password) => {
+  // Sign in user with email and password
+  const signInUser = async (email, password) => {
     setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.error("Error signing in user:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const signInWithGoogle = () => {
+  // Sign in user with Google
+  const signInWithGoogle = async () => {
     setLoading(true);
-    return signInWithPopup(auth, googleProvider);
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const signOutUser = () => {
+  // Sign out user
+  const signOutUser = async () => {
     setLoading(true);
-    return signOut(auth);
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Error signing out user:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (currentUser) => {
+        setUser(currentUser);
+        setLoading(false); 
+      },
+      (error) => {
+        console.error("Auth state change error:", error);
+        setLoading(false); 
+      }
+    );
 
-    return () => unsubscribe();
+    return () => unsubscribe(); 
   }, []);
 
   const authInfo = {

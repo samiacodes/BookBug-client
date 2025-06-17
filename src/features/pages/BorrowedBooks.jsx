@@ -8,14 +8,18 @@ const BorrowedBooks = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/borrowed?email=${user.email}`)
+      .get(
+        `https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/borrowed?email=${user.email}`
+      )
       .then((res) => {
         setBorrowedBooks(res.data);
       });
   }, [user]);
 
   const handleReturn = async (id) => {
-    await axios.delete(`http://localhost:3000/borrowed/${id}`);
+    await axios.delete(
+      `https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/borrowed/${id}`
+    );
     setBorrowedBooks((prev) => prev.filter((book) => book._id !== id));
   };
 
