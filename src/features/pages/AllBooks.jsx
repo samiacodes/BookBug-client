@@ -1,46 +1,92 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+// src/pages/AllBooks.jsx
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router";
 
 const AllBooks = () => {
   const [books, setBooks] = useState([]);
+  const [showAvailable, setShowAvailable] = useState(false);
+  const [viewType, setViewType] = useState("card");
 
+  // Fetch books from server
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/books")
-      .then((res) => setBooks(res.data))
-      .catch((err) => console.error("Failed to fetch books", err));
-  }, []);
+    let url = "https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books";
+    if (showAvailable) {
+      url += "?available=true";
+    }
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => setBooks(data))
+      .catch((err) => console.error(err));
+  }, [showAvailable]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold mb-6 text-center">All Books</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {books.map((book) => (
-          <div
-            key={book._id}
-            className="bg-white shadow-md rounded-lg overflow-hidden"
-          >
-            <img
-              src={book.image}
-              alt={book.name}
-              className="h-60 w-full object-cover"
-            />
-            <div className="p-4 space-y-2">
-              <h3 className="text-xl font-semibold">{book.name}</h3>
-              <p className="text-sm text-gray-700">Author: {book.author}</p>
-              <p className="text-sm text-gray-600">Category: {book.category}</p>
-              <p className="text-sm">Rating: ⭐ {book.rating}/5</p>
+    <div className="p-6 max-w-7xl mx-auto">
+      {/* Controls */}
+      <div className="flex justify-between items-center mb-4">
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+          onClick={() => setShowAvailable(!showAvailable)}
+        >
+          {showAvailable ? "Show All Books" : "Show Available Books"}
+        </button>
 
+        <select
+          className="border px-3 py-2 rounded"
+          value={viewType}
+          onChange={(e) => setViewType(e.target.value)}
+        >
+          <option value="card">Card View</option>
+          <option value="table">Table View</option>
+        </select>
+      </div>
+
+      {/* Views */}
+      {viewType === "card" ? (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {books.map((book) => (
+            <div key={book._id} className="border rounded p-4 shadow bg-white">
+              <img
+                src={book.image}
+                alt={book.name}
+                className="w-full h-40 object-cover rounded mb-2"
+              />
+              <h2 className="text-xl font-bold">{book.name}</h2>
+              <p className="text-sm text-gray-700">Author: {book.author}</p>
+              <p className="text-sm text-gray-700">Category: {book.category}</p>
+              <p className="text-sm text-gray-700">
+                Quantity: {book.quantity ?? 0}
+              </p>
               <Link to={`/update-book/${book._id}`}>
                 <button className="btn btn-outline btn-sm mt-2 w-full">
                   Update
                 </button>
               </Link>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <table className="w-full table-auto border mt-4">
+          <thead>
+            <tr className="bg-gray-200 text-left">
+              <th className="p-2">Name</th>
+              <th className="p-2">Author</th>
+              <th className="p-2">Category</th>
+              <th className="p-2">Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {books.map((book) => (
+              <tr key={book._id} className="border-b">
+                <td className="p-2">{book.name}</td>
+                <td className="p-2">{book.author}</td>
+                <td className="p-2">{book.category}</td>
+                <td className="p-2">{book.quantity ?? 0}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
