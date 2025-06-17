@@ -32,7 +32,10 @@ const AddBook = () => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:3000/books", book);
+      await axios.post(
+        "https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books",
+        book
+      );
       toast.success("Book added successfully!");
       navigate("/all-books");
     } catch (error) {
@@ -45,11 +48,8 @@ const AddBook = () => {
     <div className="max-w-full mx-auto mt-10 p-6 bg-white shadow rounded-lg grid md:grid-cols-2 gap-8">
       {/* Lottie Section */}
       <div className="flex items-center justify-center">
-        
         <div className="text-center">
-          
-        <Lottie animationData={bookAnimation} loop={true} />
-
+          <Lottie animationData={bookAnimation} loop={true} />
         </div>
       </div>
 
@@ -78,7 +78,7 @@ const AddBook = () => {
               type="text"
               name="name"
               required
-              value={book.title}
+              value={book.name}
               onChange={handleChange}
               className="w-full input input-bordered"
               placeholder="Book Name"
@@ -126,6 +126,7 @@ const AddBook = () => {
               <option value="History">History</option>
               <option value="Drama">Drama</option>
               <option value="Sci-Fi">Sci-Fi</option>
+              <option value="Dystopian">Dystopian</option>
             </select>
           </div>
 
