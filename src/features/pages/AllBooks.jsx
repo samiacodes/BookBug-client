@@ -1,23 +1,36 @@
 // src/pages/AllBooks.jsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import Spinner from "../shared/Spinner";
 
 const AllBooks = () => {
   const [books, setBooks] = useState([]);
   const [showAvailable, setShowAvailable] = useState(false);
   const [viewType, setViewType] = useState("card");
+  const [loading, setLoading] = useState(true);
 
-  // Fetch books from server
   useEffect(() => {
-    let url = "https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books";
-    if (showAvailable) {
-      url += "?available=true";
-    }
+    const fetchBooks = async () => {
+      setLoading(true); 
 
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => setBooks(data))
-      .catch((err) => console.error(err));
+      try {
+        let url =
+          "https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books";
+        if (showAvailable) {
+          url += "?available=true";
+        }
+
+        const res = await axios.get(url);
+        setBooks(res.data);
+      } catch (err) {
+        console.error("Error fetching books:", err);
+      } finally {
+        setLoading(false); 
+      }
+    };
+
+    fetchBooks();
   }, [showAvailable]);
 
   return (
@@ -42,56 +55,66 @@ const AllBooks = () => {
           </select>
         </div>
 
-        {/* Views */}
-        {viewType === "card" ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {books.map((book) => (
-              <div
-                key={book._id}
-                className="max-w-full border rounded p-4 shadow bg-white"
-              >
-                <img
-                  src={book.image}
-                  alt={book.name}
-                  className="w-full h-40 object-cover rounded mb-2"
-                />
-                <h2 className="text-xl font-bold">{book.name}</h2>
-                <p className="text-sm text-gray-700">Author: {book.author}</p>
-                <p className="text-sm text-gray-700">
-                  Category: {book.category}
-                </p>
-                <p className="text-sm text-gray-700">
-                  Quantity: {book.quantity ?? 0}
-                </p>
-                <Link to={`/update-book/${book._id}`}>
-                  <button className="btn btn-outline btn-sm mt-2 w-full">
-                    Update
-                  </button>
-                </Link>
-              </div>
-            ))}
+        {/* Loader */}
+        {loading ? (
+          <div className="text-center py-10">
+            <Spinner/>
           </div>
         ) : (
-          <table className="max-w-full table-auto border mt-4">
-            <thead>
-              <tr className="bg-gray-200 text-left">
-                <th className="p-2">Name</th>
-                <th className="p-2">Author</th>
-                <th className="p-2">Category</th>
-                <th className="p-2">Quantity</th>
-              </tr>
-            </thead>
-            <tbody>
-              {books.map((book) => (
-                <tr key={book._id} className="border-b">
-                  <td className="p-2">{book.name}</td>
-                  <td className="p-2">{book.author}</td>
-                  <td className="p-2">{book.category}</td>
-                  <td className="p-2">{book.quantity ?? 0}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <>
+            {viewType === "card" ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {books.map((book) => (
+                  <div
+                    key={book._id}
+                    className="max-w-full border rounded p-4 shadow bg-white"
+                  >
+                    <img
+                      src={book.image}
+                      alt={book.name}
+                      className="w-full h-40 object-cover rounded mb-2"
+                    />
+                    <h2 className="text-xl font-bold">{book.name}</h2>
+                    <p className="text-sm text-gray-700">
+                      Author: {book.author}
+                    </p>
+                    <p className="text-sm text-gray-700">
+                      Category: {book.category}
+                    </p>
+                    <p className="text-sm text-gray-700">
+                      Quantity: {book.quantity ?? 0}
+                    </p>
+                    <Link to={`/update-book/${book._id}`}>
+                      <button className="btn btn-outline btn-sm mt-2 w-full">
+                        Update
+                      </button>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <table className="max-w-full table-auto border mt-4">
+                <thead>
+                  <tr className="bg-gray-200 text-left">
+                    <th className="p-2">Name</th>
+                    <th className="p-2">Author</th>
+                    <th className="p-2">Category</th>
+                    <th className="p-2">Quantity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {books.map((book) => (
+                    <tr key={book._id} className="border-b">
+                      <td className="p-2">{book.name}</td>
+                      <td className="p-2">{book.author}</td>
+                      <td className="p-2">{book.category}</td>
+                      <td className="p-2">{book.quantity ?? 0}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </>
         )}
       </section>
     </div>

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import BorrowModal from "../../components/BorrowModal";
 import Title from "../../components/Title";
+import Spinner from "../shared/Spinner";
 const BookDetails = () => {
   const { id } = useParams();
   const [book, setBook] = useState(null);
@@ -15,7 +16,7 @@ const BookDetails = () => {
   }, [id]);
 
   if (!book) {
-    return <p className="text-center mt-10 text-lg">Loading book details...</p>;
+    return <Spinner/>;
   }
 
   return (
