@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import BorrowModal from "../../components/BorrowModal";
+import Title from "../../components/Title";
 const BookDetails = () => {
   const { id } = useParams();
   const [book, setBook] = useState(null);
@@ -28,7 +29,7 @@ const BookDetails = () => {
           />
         </div>
         <div>
-          <h2 className="text-3xl font-bold mt-4">{book.name}</h2>
+          <Title text={book.name} level={2} />
           <p className="text-gray-600 mt-1">Author: {book.author}</p>
           <p className="mt-1">Category: {book.category}</p>
           <p className="mt-1">Rating: ⭐ {book.rating}</p>
@@ -41,7 +42,9 @@ const BookDetails = () => {
             disabled={book.quantity === 0}
             onClick={() => setShowModal(true)}
             className={`btn ${
-              book.quantity === 0 ? "btn-disabled bg-gray-400" : "btn-outline bg-green-500"
+              book.quantity === 0
+                ? "btn-disabled bg-gray-400"
+                : "btn-outline bg-green-500"
             }`}
           >
             {book.quantity === 0 ? "Out of Stock" : "Borrow"}

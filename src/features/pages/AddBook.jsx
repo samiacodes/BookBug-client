@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Lottie from "lottie-react";
 import bookAnimation from "../../assets/lotties/addBook.json";
+import Title from "../../components/Title";
 
 const AddBook = () => {
   const [book, setBook] = useState({
@@ -55,9 +56,7 @@ const AddBook = () => {
 
       {/* Form Section */}
       <div>
-        <h2 className="text-3xl font-bold mb-6 text-center text-primary">
-          Add a New Book
-        </h2>
+        <Title text="Add a New Book" level={2} />
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="font-semibold">Image URL</label>

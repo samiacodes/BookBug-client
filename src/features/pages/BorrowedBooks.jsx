@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../hooks/useAuth"; 
+import Title from "../../components/Title";
 
 const BorrowedBooks = () => {
   const { user } = useAuth(); 
@@ -26,13 +27,10 @@ const BorrowedBooks = () => {
   return (
     <div className="">
       <div className="min-w-7xl">
-        <h1 className="text-3xl font-bold mb-4">My Borrowed Books</h1>
-        <div className="flex gap-6">
+        <Title text="My Borrowed Books" level={2} />
+        <div className="flex flex-wrap gap-6">
           {borrowedBooks.map((entry) => (
-            <div
-              key={entry._id}
-              className="bg-white p-4 shadow-2xl rounded"
-            >
+            <div key={entry._id} className="bg-white p-4 shadow-2xl rounded">
               <div className="">
                 <img
                   src={entry.bookId.image}
@@ -41,7 +39,7 @@ const BorrowedBooks = () => {
                 />
               </div>
               <div className="">
-                <h2 className="text-xl font-bold">{entry.bookId.name}</h2>
+                <Title text={entry.bookId.name} level={2} />
                 <p>Category: {entry.bookId.category}</p>
                 <p>Category: {entry.bookId.des}</p>
                 <p>

@@ -15,7 +15,7 @@ const RootLayout = () => {
       <Navbar />
 
       {/* Page content */}
-      <main className="max-w-7xl min-h-[calc(100vh-277px)] mx-auto">
+      <main className="max-w-7xl min-h-[calc(100vh-277px)] my-6 mx-auto">
         <DynamicTitle />
         <Outlet />
       </main>
