@@ -26,7 +26,7 @@ const BookDetails = () => {
           <img
             src={book.image}
             alt={book.name}
-            className="max-w-sm rounded-lg shadow-2xl"
+            className=" rounded-lg shadow-2xl"
           />
         </div>
         <div>

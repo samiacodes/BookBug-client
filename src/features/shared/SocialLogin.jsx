@@ -20,7 +20,7 @@ const SocialLogin = ({ from }) => {
     console.log("Google Sign In clicked");
   };
   return (
-    <div className="w-full max-w-md mx-auto mt-6">
+    <div className="w-full mx-auto mt-6">
       {/* Divider */}
       <div className="flex items-center mb-4">
         <div className="flex-grow border-t border-gray-300"></div>

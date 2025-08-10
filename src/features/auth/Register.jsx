@@ -10,6 +10,7 @@ import {
   updateProfile,
 } from "../../firebase/firebase.init";
 import SocialLogin from "../shared/SocialLogin";
+import Title from "../../components/Title";
 
 const Register = () => {
   // const { setUser } = useContext(AuthContext);
@@ -58,11 +59,11 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen grid md:grid-cols-2 bg-base-100">
+    <div className="min-h-screen max-w-full mx-auto grid md:grid-cols-2 bg-white">
       {/* Left Side */}
       <div className="flex flex-col justify-center items-center p-10">
         <div className="w-full max-w-md space-y-4">
-          <h2 className="text-3xl font-bold text-center">Create an Account</h2>
+          <Title text="Create an Account" level={2} />
           <form onSubmit={handleSubmit} className="space-y-4">
             <input
               type="text"
@@ -122,11 +123,11 @@ const Register = () => {
       </div>
 
       {/* Right Side */}
-      <div className="flex items-center justify-center bg-base-200 p-6">
+      <div className="flex items-center justify-center bg-white p-6">
         <Lottie
           animationData={animationImage}
           loop
-          className="max-w-md w-full"
+          className="w-full"
         />
       </div>
     </div>

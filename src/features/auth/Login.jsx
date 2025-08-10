@@ -44,7 +44,7 @@ const Login = () => {
     <div className="min-h-screen grid md:grid-cols-2 bg-base-100">
       {/* Left */}
       <div className="flex flex-col justify-center items-center p-10">
-        <div className="w-full max-w-md space-y-4">
+        <div className="w-full space-y-4">
           <h2 className="text-3xl font-bold text-center">
             Login to Your Account
           </h2>
@@ -91,11 +91,11 @@ const Login = () => {
       </div>
 
       {/* Right */}
-      <div className="flex items-center justify-center bg-base-200 p-6">
+      <div className="flex items-center justify-center bg-white p-6">
         <Lottie
           animationData={loginAnimation}
           loop
-          className="max-w-md w-full"
+          className="w-full"
         />
       </div>
     </div>
