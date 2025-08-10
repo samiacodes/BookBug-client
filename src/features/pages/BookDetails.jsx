@@ -20,8 +20,8 @@ const BookDetails = () => {
 
   return (
     <div className="hero">
-      <div className="hero-content flex-col lg:flex-row">
-        <div className="mx-auto">
+      <div className="hero-content max-w-full flex-col lg:flex-row">
+        <div className="mx-auto ">
           <img
             src={book.image}
             alt={book.name}

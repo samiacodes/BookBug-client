@@ -28,15 +28,10 @@ const BorrowedBooks = () => {
     <div className="">
       <div className="min-w-7xl">
         <Title text="My Borrowed Books" level={2} />
-        <div className="flex flex-wrap gap-6">
+        <div className="flex flex-wrap text-center gap-6">
           {borrowedBooks.map((entry) => (
-            <div key={entry._id} className="bg-white p-4 shadow-2xl rounded">
+            <div key={entry._id} className="bg-white p-4 flex-1 shadow-2xl rounded">
               <div className="">
-                <img
-                  src={entry.bookId.image}
-                  alt={entry.bookId.name}
-                  className="w-auto h-auto object-cover rounded mb-6"
-                />
               </div>
               <div className="">
                 <Title text={entry.bookId.name} level={2} />
@@ -48,7 +43,7 @@ const BorrowedBooks = () => {
                 </p>
                 <button
                   onClick={() => handleReturn(entry._id)}
-                  className="btn btn-sm bg-red-500 text-white mt-2"
+                  className="btn btn-sm bg-green-500 text-white mt-2"
                 >
                   Return
                 </button>
