@@ -18,43 +18,49 @@ const BookDetails = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
-      <img
-        src={book.image}
-        alt={book.title}
-        className="w-full h-80 object-cover rounded"
-      />
-      <h2 className="text-3xl font-bold mt-4">{book.name}</h2>
-      <p className="text-gray-600 mt-1">Author: {book.author}</p>
-      <p className="mt-1">Category: {book.category}</p>
-      <p className="mt-1">Rating: ⭐ {book.rating}</p>
-      <p className="my-4 text-justify">{book.description}</p>
-      <p className="mb-4">
-        Available Quantity: <strong>{book.quantity}</strong>
-      </p>
+    <div className="hero">
+      <div className="hero-content flex-col lg:flex-row">
+        <div className="mx-auto">
+          <img
+            src={book.image}
+            alt={book.name}
+            className="max-w-sm rounded-lg shadow-2xl"
+          />
+        </div>
+        <div>
+          <h2 className="text-3xl font-bold mt-4">{book.name}</h2>
+          <p className="text-gray-600 mt-1">Author: {book.author}</p>
+          <p className="mt-1">Category: {book.category}</p>
+          <p className="mt-1">Rating: ⭐ {book.rating}</p>
+          <p className="my-4 text-justify">{book.description}</p>
+          <p className="mb-4">
+            Available Quantity: <strong>{book.quantity}</strong>
+          </p>
 
-      <button
-        disabled={book.quantity === 0}
-        onClick={() => setShowModal(true)}
-        className={`btn ${
-          book.quantity === 0 ? "btn-disabled bg-gray-400" : "btn-primary"
-        }`}
-      >
-        {book.quantity === 0 ? "Out of Stock" : "Borrow"}
-      </button>
+          <button
+            disabled={book.quantity === 0}
+            onClick={() => setShowModal(true)}
+            className={`btn ${
+              book.quantity === 0 ? "btn-disabled bg-gray-400" : "btn-outline bg-green-500"
+            }`}
+          >
+            {book.quantity === 0 ? "Out of Stock" : "Borrow"}
+          </button>
 
-      {showModal && (
-        <BorrowModal
-          book={book}
-          onClose={() => setShowModal(false)}
-          onBorrowSuccess={() => {
-            setBook((prev) => ({
-              ...prev,
-              quantity: prev.quantity - 1,
-            }));
-          }}
-        />
-      )}
+          {showModal && (
+            <BorrowModal
+              book={book}
+              onClose={() => setShowModal(false)}
+              onBorrowSuccess={() => {
+                setBook((prev) => ({
+                  ...prev,
+                  quantity: prev.quantity - 1,
+                }));
+              }}
+            />
+          )}
+        </div>
+      </div>
     </div>
   );
 };

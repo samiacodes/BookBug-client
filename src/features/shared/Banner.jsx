@@ -6,7 +6,7 @@ const book3 = "https://i.ibb.co/k2ynP3Kr/juliano-chaves-qokwv-CWJPv0-unsplash.jp
 
 const Banner = () => {
   return (
-    <div className="min-h-[80vh] max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row items-center justify-between gap-10">
+    <div className="min-h-[80vh] max-w-7xl mx-auto py-12 flex flex-col md:flex-row items-center justify-between gap-10">
       
       {/* Left: Animated Text */}
       <motion.div

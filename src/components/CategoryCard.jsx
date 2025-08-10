@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import Title from "./Title";
 
 const CategoryCard = ({ category }) => {
   return (
@@ -7,9 +8,10 @@ const CategoryCard = ({ category }) => {
       whileHover={{ scale: 1.05 }}
       className="bg-white shadow-md p-6 rounded-lg text-center"
     >
-      <h2 className="text-xl font-semibold mb-2">{category}</h2>
+      <Title text={category} level={2} />
+
       <Link to={`/category/${category}`}>
-        <button className="btn btn-sm bg-blue-600 text-white mt-2">
+        <button className="btn btn-sm bg-green-600 text-white mt-2">
           View Books
         </button>
       </Link>

@@ -10,12 +10,12 @@ const RootLayout = () => {
 
   if (loading) return <Spinner />;
   return (
-    <div className="flex flex-col min-h-screen bg-base-200 text-base-content">
+    <div className="flex flex-col bg-green-50 min-h-screen text-base-content">
       {/* Navbar */}
       <Navbar />
 
       {/* Page content */}
-      <main className="flex-grow max-w-full mx-auto px-4 py-6">
+      <main className="max-w-7xl min-h-[calc(100vh-277px)] mx-auto">
         <DynamicTitle />
         <Outlet />
       </main>

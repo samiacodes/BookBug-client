@@ -100,7 +100,7 @@ const Navbar = () => {
 
   return (
     <div className="bg-white shadow-md">
-      <div className="navbar max-w-7xl mx-auto px-4">
+      <div className="navbar max-w-7xl mx-auto px-6 lg:px-0">
         {/* Logo */}
         <div className="navbar-start">
           <Link to="/" className="group flex items-center text-2xl font-bold">

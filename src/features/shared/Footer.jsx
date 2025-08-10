@@ -13,7 +13,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-white border-t mt-10">
-      <div className="max-w-7xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-6">
+      <div className="max-w-7xl mx-auto px-6 md:px-0 py-8 grid md:grid-cols-2 gap-6">
         {/* Logo + Name */}
         <div className="flex items-center gap-3">
           <FaBookOpen className="text-green-700 text-3xl" />

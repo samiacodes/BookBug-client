@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Lottie from "lottie-react";
 import animationImage from "../../assets/lotties/register.json";
 import { AuthContext } from "../../contexts/AuthContexts/AuthContext";
@@ -12,7 +12,7 @@ import {
 import SocialLogin from "../shared/SocialLogin";
 
 const Register = () => {
-  const { setUser } = useContext(AuthContext);
+  // const { setUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -47,7 +47,7 @@ const Register = () => {
         await updateProfile(res.user, { displayName: name, photoURL });
         const token = await res.user.getIdToken();
         localStorage.setItem("token", token);
-        setUser(res.user);
+        // setUser(res.user);
         toast.success("Registration successful!");
         navigate("/");
       })

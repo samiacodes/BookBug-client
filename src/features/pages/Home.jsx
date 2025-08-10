@@ -4,6 +4,7 @@ import BookCard from "../../components/BookCard";
 import CategoryCard from "../../components/CategoryCard";
 import Banner from "../shared/Banner";
 import { motion } from "framer-motion";
+import Title from "../../components/Title";
 
 const Home = () => {
   const [books, setBooks] = useState([]);
@@ -21,8 +22,8 @@ const Home = () => {
       <Banner />
 
       {/* Categories */}
-      <section className="max-w-7xl mx-auto px-6">
-        <h2 className="text-2xl font-bold mb-4">📚 Book Categories</h2>
+      <section className="max-w-7xl mx-auto">
+        <Title text="Book Categories" level={2} />
         <div className="grid md:grid-cols-4 gap-6">
           {categories.map((cat, i) => (
             <CategoryCard key={i} category={cat} />
@@ -31,8 +32,8 @@ const Home = () => {
       </section>
 
       {/* Book List */}
-      <section className="max-w-7xl mx-auto px-6">
-        <h2 className="text-2xl font-bold mb-4">🔥 Popular Books</h2>
+      <section className="max-w-7xl mx-auto">
+        <Title text="Popular Books" level={2} />
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -47,8 +48,9 @@ const Home = () => {
 
       {/* Extra Section 1 */}
       <section className="bg-gray-100 py-6 px-6">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <h3 className="text-xl font-bold mb-2">Why Reading is Important?</h3>
+          <Title text="Popular Books" level={3} />
           <p>
             Reading strengthens your brain, reduces stress, and builds your
             vocabulary. It makes you a better thinker and speaker.
@@ -58,7 +60,7 @@ const Home = () => {
 
       {/* Extra Section 2 */}
       <section className="bg-gray-200 py-6 px-6">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <h3 className="text-xl font-bold mb-2">Newly Added Genres</h3>
           <ul className="list-disc pl-6">
             <li>Modern Romance</li>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, {  useState } from "react";
 import Lottie from "lottie-react";
 import loginAnimation from "../../assets/lotties/signin.json";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import { AuthContext } from "../../contexts/AuthContexts/AuthContext";
 import SocialLogin from "../shared/SocialLogin";
 
 const Login = () => {
-  const { setUser } = useContext(AuthContext);
+  // const { setUser } = useContext(AuthContext);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({ email: "", password: "" });
 
@@ -30,7 +30,7 @@ const Login = () => {
       .then(async (res) => {
         const token = await res.user.getIdToken();
         localStorage.setItem("token", token);
-        setUser(res.user);
+        // setUser(res.user);
         toast.success("Login successful!");
         navigate("/");
       })
