@@ -41,19 +41,22 @@ A modern, responsive library management web application built with React, Fireba
 - Toast notifications for user feedback
 - Comprehensive error handling and validation
 
-## Advanced Voice Search
+### Advanced Voice Search
 
-BookBug features an advanced voice search system that allows users to:
+BookBug features an enhanced voice search system that allows users to:
 - Search for books by speaking their names or keywords
 - Navigate to different pages using voice commands
 - Receive real-time feedback and responses
 - Get dynamic guidance through rotating hints
+- Experience direct navigation to book details for exact matches
 
-### Voice Commands
+#### Voice Commands
 Users can speak any of these commands:
 - Navigation: "Go to home", "All books", "Add book", "Profile", "Login", "Register"
 - Search: "Search for [book name]", "Find [keyword]", or simply say a book name
 - Help: "Help" or "What can I say"
+
+When a user says an exact book name, they are immediately navigated to the book's detail page. For partial matches or general searches, they are taken to the search results page.
 
 ## Installation
 

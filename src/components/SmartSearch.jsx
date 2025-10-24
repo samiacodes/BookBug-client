@@ -2,6 +2,7 @@ import { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { HiMicrophone, HiSearch } from "react-icons/hi";
 import { toast } from "react-toastify";
+import axios from "axios";
 import Button from "./Button";
 import { navigationData } from "../constants/navigation";
 import { AuthContext } from "../contexts/AuthContexts/AuthContext";
@@ -13,6 +14,7 @@ const SmartSearch = ({ isMobile = false }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentHintIndex, setCurrentHintIndex] = useState(0);
   const [showHints, setShowHints] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const inputRef = useRef(null);
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
@@ -64,6 +66,34 @@ const SmartSearch = ({ isMobile = false }) => {
       setSearchQuery("");
       // Clear transcript as well
       setTranscript("");
+    }
+  };
+
+  // Function to find exact book match
+  const findExactBook = async (query) => {
+    try {
+      const response = await axios.get(
+        `https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books?search=${encodeURIComponent(query)}`
+      );
+      
+      const books = response.data;
+      if (books.length > 0) {
+        // Try to find exact match first
+        const exactMatch = books.find(
+          book => book.title.toLowerCase() === query.toLowerCase()
+        );
+        
+        if (exactMatch) {
+          return exactMatch;
+        }
+        
+        // If no exact match, return the first result
+        return books[0];
+      }
+      return null;
+    } catch (error) {
+      console.error("Error searching for books:", error);
+      return null;
     }
   };
 
@@ -131,8 +161,11 @@ const SmartSearch = ({ isMobile = false }) => {
     }
   };
 
-  const handleVoiceCommand = (command) => {
+  const handleVoiceCommand = async (command) => {
     const lowerCommand = command.toLowerCase().trim();
+    
+    // Set processing state
+    setIsProcessing(true);
     
     // Navigation commands
     const navigationCommands = [
@@ -163,6 +196,7 @@ const SmartSearch = ({ isMobile = false }) => {
       const route = navigationData.find((item) => item.path === navCommand.path);
       if (route && route.private && !user) {
         toast.warn("Please log in to access this page");
+        setIsProcessing(false);
         return;
       }
       
@@ -170,6 +204,7 @@ const SmartSearch = ({ isMobile = false }) => {
       toast.success(`Navigating to ${navCommand.command}`);
       // Clear search query after navigation
       setSearchQuery("");
+      setIsProcessing(false);
       return;
     }
 
@@ -181,20 +216,40 @@ const SmartSearch = ({ isMobile = false }) => {
         .trim();
       
       if (searchTerms) {
-        navigate(`/all-books?search=${encodeURIComponent(searchTerms)}`);
-        toast.success(`Searching for: ${searchTerms}`);
+        // Try to find exact book match
+        const book = await findExactBook(searchTerms);
+        if (book) {
+          // Navigate directly to book details
+          navigate(`/book/${book._id}`);
+          toast.success(`Found book: ${book.title}`);
+        } else {
+          // Navigate to search results
+          navigate(`/all-books?search=${encodeURIComponent(searchTerms)}`);
+          toast.success(`Searching for: ${searchTerms}`);
+        }
         // Clear search query after search
         setSearchQuery("");
+        setIsProcessing(false);
         return;
       }
     }
 
     // Direct search (if command is not a navigation command)
     if (command.trim()) {
-      navigate(`/all-books?search=${encodeURIComponent(command)}`);
-      toast.success(`Searching for: ${command}`);
+      // Try to find exact book match
+      const book = await findExactBook(command);
+      if (book) {
+        // Navigate directly to book details
+        navigate(`/book/${book._id}`);
+        toast.success(`Found book: ${book.title}`);
+      } else {
+        // Navigate to search results
+        navigate(`/all-books?search=${encodeURIComponent(command)}`);
+        toast.success(`Searching for: ${command}`);
+      }
       // Clear search query after search
       setSearchQuery("");
+      setIsProcessing(false);
       return;
     }
 
@@ -203,6 +258,7 @@ const SmartSearch = ({ isMobile = false }) => {
       showHelp();
       // Clear search query after help
       setSearchQuery("");
+      setIsProcessing(false);
       return;
     }
 
@@ -210,6 +266,7 @@ const SmartSearch = ({ isMobile = false }) => {
     toast.info(`Command not recognized: "${command}". Say "help" for assistance.`);
     // Clear search query after unrecognized command
     setSearchQuery("");
+    setIsProcessing(false);
   };
 
   const showHelp = () => {
@@ -295,13 +352,18 @@ const SmartSearch = ({ isMobile = false }) => {
           onClick={startListening}
           onMouseEnter={() => setShowHints(true)}
           onMouseLeave={() => setShowHints(false)}
+          disabled={isProcessing}
           className="flex items-center gap-2 relative"
           title={isListening ? "Listening..." : "Voice Search"}
         >
-          <HiMicrophone className={`w-5 h-5 ${isListening ? "animate-pulse" : ""}`} />
+          {isProcessing ? (
+            <span className="loading loading-spinner loading-xs"></span>
+          ) : (
+            <HiMicrophone className={`w-5 h-5 ${isListening ? "animate-pulse" : ""}`} />
+          )}
           {!isMobile && (
             <span className="hidden sm:inline">
-              {isListening ? "Listening..." : "Voice"}
+              {isListening ? "Listening..." : isProcessing ? "Processing..." : "Voice"}
             </span>
           )}
         </Button>

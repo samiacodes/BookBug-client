@@ -111,14 +111,14 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="navbar-center hidden lg:flex flex-col">
-          {/* Search Bar on its own line */}
-          <div className="mb-2 w-full max-w-2xl">
-            <SmartSearch />
-          </div>
           {/* Navigation Links */}
           <ul className="menu menu-horizontal items-center gap-2">
             {commonLinks}
           </ul>
+          {/* Search Bar on its own line */}
+          <div className="mb-2 w-full max-w-2xl">
+            <SmartSearch />
+          </div>
         </div>
 
         {/* Right Side - Theme Toggle & Auth */}

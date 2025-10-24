@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../shared/Spinner";
 import BookCard from "../../components/BookCard";
@@ -10,6 +10,8 @@ const AllBooks = () => {
   const [showAvailable, setShowAvailable] = useState(false);
   const [viewType, setViewType] = useState("card");
   const [loading, setLoading] = useState(true);
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get("search");
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -18,7 +20,11 @@ const AllBooks = () => {
       try {
         let url =
           "https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books";
-        if (showAvailable) {
+        
+        // Add search query if present
+        if (searchQuery) {
+          url += `?search=${encodeURIComponent(searchQuery)}`;
+        } else if (showAvailable) {
           url += "?available=true";
         }
 
@@ -32,7 +38,7 @@ const AllBooks = () => {
     };
 
     fetchBooks();
-  }, [showAvailable]);
+  }, [showAvailable, searchQuery]);
 
   return (
     <div className="my-6 px-4">
@@ -40,7 +46,11 @@ const AllBooks = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-base-content mb-2">All Books</h1>
-          <p className="text-base-content/60">Browse our complete collection</p>
+          {searchQuery ? (
+            <p className="text-base-content/60">Search results for: "{searchQuery}"</p>
+          ) : (
+            <p className="text-base-content/60">Browse our complete collection</p>
+          )}
         </div>
         
         {/* Controls */}
