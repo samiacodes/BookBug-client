@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaBookOpen } from "react-icons/fa";
+import Icon from "../../components/Icon";
 
 const Footer = () => {
   const footerLinks = [
@@ -17,7 +17,7 @@ const Footer = () => {
         {/* Logo + Name */}
         <div className="space-y-3">
           <div className="flex items-center gap-3">
-            <FaBookOpen className="text-primary text-3xl" />
+            <Icon name="bookOpen" className="text-primary text-3xl" />
             <span className="text-2xl font-bold font-playfair text-primary">
               BookBug
             </span>

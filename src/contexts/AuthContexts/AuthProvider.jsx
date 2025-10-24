@@ -15,6 +15,7 @@ const googleProvider = new GoogleAuthProvider();
 const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [role, setRole] = useState(null);
 
   // Create user (Sign up)
   const createUser = async (email, password) => {
@@ -32,9 +33,17 @@ const AuthProvider = ({ children }) => {
   const signInUser = async (email, password) => {
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      // Check if user is admin
+      if (email === import.meta.env.VITE_ADMIN_EMAIL) {
+        setRole("admin");
+      } else {
+        setRole("user");
+      }
+      return userCredential;
     } catch (error) {
       console.error("Error signing in user:", error);
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -44,9 +53,18 @@ const AuthProvider = ({ children }) => {
   const signInWithGoogle = async () => {
     setLoading(true);
     try {
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      const email = result.user.email;
+      // Check if user is admin
+      if (email === import.meta.env.VITE_ADMIN_EMAIL) {
+        setRole("admin");
+      } else {
+        setRole("user");
+      }
+      return result;
     } catch (error) {
       console.error("Error signing in with Google:", error);
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -57,10 +75,33 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       await signOut(auth);
+      setRole(null);
     } catch (error) {
       console.error("Error signing out user:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Recruiter quick login
+  const recruiterLogin = async () => {
+    if (import.meta.env.DEV) {
+      try {
+        const email = import.meta.env.VITE_ADMIN_EMAIL;
+        const password = import.meta.env.VITE_ADMIN_PASSWORD;
+        if (email && password) {
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          setRole("admin");
+          return userCredential;
+        } else {
+          throw new Error("Admin credentials not configured");
+        }
+      } catch (error) {
+        console.error("Error with recruiter login:", error);
+        throw error;
+      }
+    } else {
+      throw new Error("Recruiter login only available in development");
     }
   };
 
@@ -69,6 +110,16 @@ const AuthProvider = ({ children }) => {
       auth,
       (currentUser) => {
         setUser(currentUser);
+        // Check if user is admin
+        if (currentUser) {
+          if (currentUser.email === import.meta.env.VITE_ADMIN_EMAIL) {
+            setRole("admin");
+          } else {
+            setRole("user");
+          }
+        } else {
+          setRole(null);
+        }
         setLoading(false); 
       },
       (error) => {
@@ -83,10 +134,12 @@ const AuthProvider = ({ children }) => {
   const authInfo = {
     loading,
     user,
+    role,
     createUser,
     signInUser,
     signOutUser,
     signInWithGoogle,
+    recruiterLogin,
   };
 
   return (

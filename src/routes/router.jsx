@@ -7,11 +7,20 @@ import BorrowedBooks from "../features/pages/BorrowedBooks";
 import Register from "../features/auth/Register";
 import Login from "../features/auth/Login";
 import PrivateRoute from "./PrivateRoute";
+import PrivateAdminRoute from "./PrivateAdminRoute";
 import NotFound from "../features/pages/NotFound";
 import UpdateBook from "../features/pages/UpdateBook";
 import BookDetails from "../features/pages/BookDetails";
 import CategoryBooks from "../features/pages/CategoryBooks";
 import Profile from "../features/pages/Profile";
+
+// Admin Components
+import AdminLayout from "../features/admin/AdminLayout";
+import Dashboard from "../features/admin/Dashboard";
+import BooksManagement from "../features/admin/BooksManagement";
+import CategoriesManagement from "../features/admin/CategoriesManagement";
+import UsersManagement from "../features/admin/UsersManagement";
+import BannerManagement from "../features/admin/BannerManagement";
 
 const router = createBrowserRouter([
   {
@@ -78,6 +87,36 @@ const router = createBrowserRouter([
             <Profile />
           </PrivateRoute>
         ),
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    element: (
+      <PrivateAdminRoute>
+        <AdminLayout />
+      </PrivateAdminRoute>
+    ),
+    children: [
+      {
+        index: true,
+        element: <Dashboard />,
+      },
+      {
+        path: "books",
+        element: <BooksManagement />,
+      },
+      {
+        path: "categories",
+        element: <CategoriesManagement />,
+      },
+      {
+        path: "users",
+        element: <UsersManagement />,
+      },
+      {
+        path: "banner",
+        element: <BannerManagement />,
       },
     ],
   },

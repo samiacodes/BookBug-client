@@ -28,6 +28,27 @@ A modern, responsive library management web application built with React, Fireba
 - View all community reviews and ratings
 - Interactive star rating system
 
+### Admin Role System
+- Dedicated Admin Dashboard with full site control
+- Role-based access control for admin features
+- Banner, Category, Book, and User management
+- Recruiter quick login for instant admin access (development only)
+- Secure admin routes with proper authentication
+- Dynamic banner management with Cloudinary integration
+
+### Global Cloudinary Integration
+- All image uploads use Cloudinary for hosting
+- Reusable upload component for consistent experience
+- Automatic image optimization and delivery
+- Secure configuration with environment variables
+
+### Banner Management System
+- Secure backend API routes for banner management
+- Create, update, delete, and set active banners
+- Dynamic homepage banner display
+- Admin dashboard with real-time statistics
+- Clickable logo navigation to homepage
+
 ### Design
 - 60/30/10 color ratio for professional aesthetics
 - Dark/Light mode toggle with localStorage persistence
@@ -65,6 +86,7 @@ When a user says an exact book name, they are immediately navigated to the book'
 - npm, yarn, or pnpm
 - Git
 - Firebase account
+- Cloudinary account (for image hosting)
 
 ### Setup
 
@@ -90,6 +112,10 @@ When a user says an exact book name, they are immediately navigated to the book'
    VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
    VITE_FIREBASE_APP_ID=your_app_id
    VITE_API_URL=http://localhost:3000
+   VITE_ADMIN_EMAIL=admin@example.com
+   VITE_ADMIN_PASSWORD=admin123
+   VITE_CLOUDINARY_CLOUD_NAME=your_cloud_name
+   VITE_CLOUDINARY_UPLOAD_PRESET=your_upload_preset
    ```
 
 4. Start the development server
@@ -123,6 +149,10 @@ BookBug-Client/
 │   ├── components/      # Reusable components
 │   ├── contexts/        # React Context (AuthContext)
 │   ├── features/        # Feature-based modules
+│   │   ├── admin/       # Admin dashboard components
+│   │   ├── auth/        # Authentication pages
+│   │   ├── pages/       # Main application pages
+│   │   └── shared/      # Shared components
 │   ├── firebase/        # Firebase configuration
 │   ├── routes/          # Route definitions
 │   └── index.css        # Global styles and theme
@@ -143,6 +173,11 @@ BookBug-Client/
 | /book/:id | Book details | No |
 | /borrowed-books | User's borrowed books | Yes |
 | /category/:name | Books by category | No |
+| /admin | Admin Dashboard | Yes (Admin Only) |
+| /admin/books | Book Management | Yes (Admin Only) |
+| /admin/categories | Category Management | Yes (Admin Only) |
+| /admin/users | User Management | Yes (Admin Only) |
+| /admin/banner | Banner Management | Yes (Admin Only) |
 
 ## Contributing
 
@@ -173,3 +208,4 @@ This project is licensed under the MIT License.
 - DaisyUI - Component library
 - Firebase - Backend services
 - Framer Motion - Animation library
+- Cloudinary - Image hosting and management

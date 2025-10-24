@@ -1,18 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  HiOutlineMenu,
-  HiOutlineX,
-  HiHome,
-  HiBookOpen,
-  HiPlus,
-  HiClipboardList,
-  HiLogin,
-  HiUserAdd,
-  HiLogout,
-} from "react-icons/hi";
+import Icon from "../../components/Icon";
 import { useState, useContext, useEffect } from "react";
-import { FaBookOpen } from "react-icons/fa";
 import { AuthContext } from "../../contexts/AuthContexts/AuthContext";
 import { handleLogout } from "../../helpers/authHelper";
 import ThemeToggle from "../../components/ThemeToggle";
@@ -22,7 +11,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user, role } = useContext(AuthContext);
 
   const linkClass =
     "flex items-center gap-2 font-medium text-base-content hover:text-primary transition-all duration-200 px-3 py-2 rounded-lg hover:bg-base-200";
@@ -31,24 +20,31 @@ const Navbar = () => {
     <>
       <li>
         <Link to="/" className={linkClass}>
-          <HiHome /> Home
+          <Icon name="home" /> Home
         </Link>
       </li>
       <li>
         <Link to="/all-books" className={linkClass}>
-          <HiBookOpen /> All Books
+          <Icon name="books" /> All Books
         </Link>
       </li>
       <li>
         <Link to="/add-book" className={linkClass}>
-          <HiPlus /> Add Book
+          <Icon name="plus" /> Add Book
         </Link>
       </li>
       <li>
         <Link to="/borrowed-books" className={linkClass}>
-          <HiClipboardList /> Borrowed
+          <Icon name="clipboardList" /> Borrowed
         </Link>
       </li>
+      {role === "admin" && (
+        <li>
+          <Link to="/admin" className={linkClass}>
+            <Icon name="settings" /> Admin Dashboard
+          </Link>
+        </li>
+      )}
     </>
   );
 
@@ -59,7 +55,7 @@ const Navbar = () => {
           to="/login"
           className="btn btn-sm btn-primary text-primary-content border-none flex gap-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
         >
-          <HiLogin /> Login
+          <Icon name="login" /> Login
         </Link>
       </li>
       <li>
@@ -67,7 +63,7 @@ const Navbar = () => {
           to="/register"
           className="btn btn-sm btn-outline btn-primary flex items-center gap-2 rounded-lg hover:bg-primary hover:text-primary-content transition-all duration-200"
         >
-          <HiUserAdd /> Register
+          <Icon name="userAdd" /> Register
         </Link>
       </li>
     </>
@@ -90,7 +86,7 @@ const Navbar = () => {
           onClick={() => handleLogout(navigate)}
           className="btn btn-sm btn-accent border-none flex items-center gap-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
         >
-          <HiLogout /> Logout
+          <Icon name="logout" /> Logout
         </button>
       </li>
     </>
@@ -102,7 +98,7 @@ const Navbar = () => {
         {/* Logo */}
         <div className="navbar-start">
           <Link to="/" className="group flex items-center text-2xl font-bold gap-2">
-            <FaBookOpen className="w-8 h-8 text-primary group-hover:text-accent transition-colors duration-300" />
+            <Icon name="bookOpen" className="w-8 h-8 text-primary group-hover:text-accent transition-colors duration-300" />
             <span className="text-2xl font-playfair text-primary group-hover:text-accent transition-colors duration-300">
               BookBug
             </span>
@@ -134,7 +130,7 @@ const Navbar = () => {
           
           {/* Mobile Hamburger */}
           <button onClick={toggleMenu} className="btn btn-ghost lg:hidden hover:bg-base-200 rounded-lg">
-            {isOpen ? <HiOutlineX size={24} className="text-base-content" /> : <HiOutlineMenu size={24} className="text-base-content" />}
+            {isOpen ? <Icon name="x" size="lg" className="text-base-content" /> : <Icon name="menu" size="lg" className="text-base-content" />}
           </button>
         </div>
 
@@ -161,7 +157,7 @@ const Navbar = () => {
                     Menu
                   </span>
                   <button onClick={toggleMenu} className="btn btn-ghost btn-circle hover:bg-base-200">
-                    <HiOutlineX size={24} />
+                    <Icon name="x" size="lg" />
                   </button>
                 </div>
                 

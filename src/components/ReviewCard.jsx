@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { HiUser, HiCalendar, HiStar } from "react-icons/hi";
+import Icon from "./Icon";
 import { motion } from "framer-motion";
 
 const ReviewCard = ({ review, onEdit, onDelete, currentUserEmail }) => {
@@ -38,8 +38,9 @@ const ReviewCard = ({ review, onEdit, onDelete, currentUserEmail }) => {
               </span>
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (
-                  <HiStar
+                  <Icon
                     key={i}
+                    name="star"
                     className={`w-4 h-4 ${
                       i < rating ? "text-accent" : "text-base-300"
                     }`}
@@ -66,7 +67,7 @@ const ReviewCard = ({ review, onEdit, onDelete, currentUserEmail }) => {
               />
             ) : (
               <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                <HiUser className="w-5 h-5 text-primary" />
+                <Icon name="user" className="w-5 h-5 text-primary" />
               </div>
             )}
             <div>
@@ -74,7 +75,7 @@ const ReviewCard = ({ review, onEdit, onDelete, currentUserEmail }) => {
                 {author.name}
               </p>
               <div className="flex items-center gap-1 text-xs text-base-content/60">
-                <HiCalendar className="w-3 h-3" />
+                <Icon name="calendar" className="w-3 h-3" />
                 <span>{formatDate(createdAt)}</span>
               </div>
             </div>

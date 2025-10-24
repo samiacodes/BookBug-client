@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { HiMicrophone, HiSearch } from "react-icons/hi";
+import Icon from "./Icon";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Button from "./Button";
@@ -300,10 +300,10 @@ const SmartSearch = ({ isMobile = false }) => {
             placeholder={searchHints[currentHintIndex]}
             className="input input-bordered w-full pl-10 pr-4 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
           />
-          <HiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-base-content/50 w-5 h-5" />
+          <Icon name="search" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-base-content/50 w-5 h-5" />
         </div>
         <Button type="submit" variant="primary" className="px-4">
-          <HiSearch className="w-5 h-5" />
+          <Icon name="search" />
         </Button>
       </form>
     );
@@ -328,7 +328,7 @@ const SmartSearch = ({ isMobile = false }) => {
               placeholder={searchHints[currentHintIndex]}
               className="input input-bordered w-full pl-10 pr-10 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
             />
-            <HiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-base-content/50 w-5 h-5" />
+            <Icon name="search" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-base-content/50 w-5 h-5" />
             {searchQuery && (
               <button
                 type="button"
@@ -340,7 +340,7 @@ const SmartSearch = ({ isMobile = false }) => {
             )}
           </div>
           <Button type="submit" variant="primary" className="px-4">
-            <HiSearch className="w-5 h-5" />
+            <Icon name="search" />
           </Button>
         </form>
       )}
@@ -359,7 +359,7 @@ const SmartSearch = ({ isMobile = false }) => {
           {isProcessing ? (
             <span className="loading loading-spinner loading-xs"></span>
           ) : (
-            <HiMicrophone className={`w-5 h-5 ${isListening ? "animate-pulse" : ""}`} />
+            <Icon name="microphone" className={`w-5 h-5 ${isListening ? "animate-pulse" : ""}`} />
           )}
           {!isMobile && (
             <span className="hidden sm:inline">
@@ -392,7 +392,7 @@ const SmartSearch = ({ isMobile = false }) => {
               placeholder={searchHints[currentHintIndex]}
               className="input input-bordered w-full pl-10 pr-10 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
             />
-            <HiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-base-content/50 w-5 h-5" />
+            <Icon name="search" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-base-content/50 w-5 h-5" />
             {searchQuery && (
               <button
                 type="button"

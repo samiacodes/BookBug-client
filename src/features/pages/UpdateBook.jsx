@@ -5,11 +5,13 @@ import toast from "react-hot-toast";
 import Spinner from "../shared/Spinner";
 import Title from "../../components/Title";
 import Button from "../../components/Button";
+import CloudinaryUpload from "../../components/CloudinaryUpload";
 
 const UpdateBook = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [book, setBook] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     axios
@@ -29,11 +31,23 @@ const UpdateBook = () => {
     setBook({ ...book, [name]: name === "rating" ? parseInt(value) : value });
   };
 
+  const handleImageUpload = (url) => {
+    setBook(prev => ({
+      ...prev,
+      image: url
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!book || !book.name || !book.author || !book.category) {
       toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    if (uploading) {
+      toast.error("Please wait for the image to finish uploading.");
       return;
     }
 
@@ -64,16 +78,17 @@ const UpdateBook = () => {
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-medium">Image URL</span>
+              <span className="label-text font-medium">Image</span>
             </label>
+            <CloudinaryUpload
+              onUploadSuccess={handleImageUpload}
+              onUploading={setUploading}
+              previewUrl={book.image}
+            />
             <input
-              type="text"
+              type="hidden"
               name="image"
-              required
               value={book.image}
-              onChange={handleChange}
-              className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
-              placeholder="Enter image URL"
             />
           </div>
 
@@ -147,8 +162,9 @@ const UpdateBook = () => {
               type="submit"
               variant="primary"
               fullWidth
+              disabled={uploading}
             >
-              Update Book
+              {uploading ? "Uploading..." : "Update Book"}
             </Button>
           </div>
         </form>

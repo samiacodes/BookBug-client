@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
+import Icon from "./Icon";
 import { navigationData } from "../constants/navigation";
 
 const Footer = () => {
@@ -44,21 +44,21 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaFacebookF className="hover:text-accent transition" />
+              <Icon name="facebook" className="hover:text-accent transition" />
             </a>
             <a
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaTwitter className="hover:text-accent transition" />
+              <Icon name="twitter" className="hover:text-accent transition" />
             </a>
             <a
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaInstagram className="hover:text-accent transition" />
+              <Icon name="instagram" className="hover:text-accent transition" />
             </a>
           </div>
         </div>

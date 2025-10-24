@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
-import { HiStar } from "react-icons/hi";
+import Icon from "./Icon";
 import { AuthContext } from "../contexts/AuthContexts/AuthContext";
 
 const ReviewForm = ({ onSubmit, onCancel, initialData, isEditing }) => {
@@ -98,7 +98,8 @@ const ReviewForm = ({ onSubmit, onCancel, initialData, isEditing }) => {
               onClick={() => handleRatingChange(star)}
               className="transition-transform hover:scale-110"
             >
-              <HiStar
+              <Icon
+                name="star"
                 className={`w-8 h-8 ${
                   star <= formData.rating
                     ? "text-accent"

@@ -3,9 +3,9 @@ import axios from "axios";
 import ReviewCard from "./ReviewCard";
 import ReviewForm from "./ReviewForm";
 import Button from "./Button";
+import Icon from "./Icon";
 import { AuthContext } from "../contexts/AuthContexts/AuthContext";
 import { toast } from "react-toastify";
-import { HiPlus } from "react-icons/hi";
 import Title from "./Title";
 
 const ReviewList = () => {
@@ -105,7 +105,7 @@ const ReviewList = () => {
               setEditingReview(null);
             }}
           >
-            <HiPlus className="inline-block w-5 h-5 mr-2" />
+            <Icon name="plus" className="inline-block w-5 h-5 mr-2" />
             Write Review
           </Button>
         )}

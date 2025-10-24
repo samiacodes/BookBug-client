@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { HiSun, HiMoon } from "react-icons/hi";
+import Icon from "./Icon";
 
 const ThemeToggle = () => {
   const [theme, setTheme] = useState(() => {
@@ -26,9 +26,9 @@ const ThemeToggle = () => {
       title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
     >
       {theme === "light" ? (
-        <HiMoon className="w-6 h-6 text-primary" />
+        <Icon name="moon" className="w-6 h-6 text-primary" />
       ) : (
-        <HiSun className="w-6 h-6 text-accent" />
+        <Icon name="sun" className="w-6 h-6 text-accent" />
       )}
     </button>
   );

@@ -12,9 +12,9 @@ import {
 import SocialLogin from "../shared/SocialLogin";
 import Title from "../../components/Title";
 import Button from "../../components/Button";
+import RecruiterLoginButton from "../../components/RecruiterLoginButton";
 
 const Register = () => {
-  // const { setUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -149,6 +149,9 @@ const Register = () => {
               Register
             </Button>
           </form>
+
+          {/* Recruiter Quick Login Button */}
+          <RecruiterLoginButton />
 
           <SocialLogin />
 

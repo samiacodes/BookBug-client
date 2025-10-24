@@ -1,15 +1,14 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import Lottie from "lottie-react";
 import loginAnimation from "../../assets/lotties/signin.json";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { auth, signInWithEmailAndPassword } from "../../firebase/firebase.init";
-import { AuthContext } from "../../contexts/AuthContexts/AuthContext";
 import SocialLogin from "../shared/SocialLogin";
 import Button from "../../components/Button";
+import RecruiterLoginButton from "../../components/RecruiterLoginButton";
 
 const Login = () => {
-  // const { setUser } = useContext(AuthContext);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({ email: "", password: "" });
 
@@ -31,7 +30,13 @@ const Login = () => {
         const token = await res.user.getIdToken();
         localStorage.setItem("token", token);
         toast.success("Login successful!");
-        navigate("/"); // Redirect to Home page
+        
+        // Check if user is admin
+        if (email === import.meta.env.VITE_ADMIN_EMAIL) {
+          navigate("/admin"); // Redirect to Admin Dashboard
+        } else {
+          navigate("/"); // Redirect to Home page
+        }
       })
       .catch((err) => {
         setError(err.message);
@@ -96,6 +101,9 @@ const Login = () => {
               Login
             </Button>
           </form>
+
+          {/* Recruiter Quick Login Button */}
+          <RecruiterLoginButton />
 
           {/* Social Login */}
           <SocialLogin />
