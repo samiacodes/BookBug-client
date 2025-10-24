@@ -11,6 +11,7 @@ import NotFound from "../features/pages/NotFound";
 import UpdateBook from "../features/pages/UpdateBook";
 import BookDetails from "../features/pages/BookDetails";
 import CategoryBooks from "../features/pages/CategoryBooks";
+import Profile from "../features/pages/Profile";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,14 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path: "profile",
+        element: (
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        ),
       },
     ],
   },

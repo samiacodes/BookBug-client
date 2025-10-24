@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   HiOutlineMenu,
@@ -11,18 +11,17 @@ import {
   HiUserAdd,
   HiLogout,
 } from "react-icons/hi";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { FaBookOpen } from "react-icons/fa";
 import { AuthContext } from "../../contexts/AuthContexts/AuthContext";
 import { handleLogout } from "../../helpers/authHelper";
-import { useNavigate } from "react-router-dom";
 import ThemeToggle from "../../components/ThemeToggle";
+import SmartSearch from "../../components/SmartSearch";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
   const navigate = useNavigate();
-  console.log(motion)
   const { user } = useContext(AuthContext);
 
   const linkClass =
@@ -75,13 +74,13 @@ const Navbar = () => {
   ) : (
     <>
       <li className="relative group flex items-center">
-        <div className="self-center overflow-hidden ring-2 ring-primary ring-offset-2 rounded-full hover:ring-accent transition-all duration-300">
+        <Link to="/profile" className="self-center overflow-hidden ring-2 ring-primary ring-offset-2 rounded-full hover:ring-accent transition-all duration-300">
           <img
             src={user?.photoURL || "/default-avatar.png"}
             alt={user?.displayName || "User"}
             className="object-cover rounded-full w-10 h-10"
           />
-        </div>
+        </Link>
         <div className="absolute left-1/2 -translate-x-1/2 top-[115%] opacity-0 group-hover:opacity-100 bg-base-100 text-base-content text-sm px-3 py-2 rounded-lg shadow-lg transition-all duration-200 whitespace-nowrap z-50 border border-base-300">
           {user.displayName || "Anonymous"}
         </div>
@@ -96,8 +95,6 @@ const Navbar = () => {
       </li>
     </>
   );
-  
-
 
   return (
     <div className="bg-base-100 shadow-lg border-b border-base-300 sticky top-0 z-50 backdrop-blur-sm bg-opacity-95">
@@ -113,7 +110,12 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Menu */}
-        <div className="navbar-center hidden lg:flex">
+        <div className="navbar-center hidden lg:flex flex-col">
+          {/* Search Bar on its own line */}
+          <div className="mb-2 w-full max-w-2xl">
+            <SmartSearch />
+          </div>
+          {/* Navigation Links */}
           <ul className="menu menu-horizontal items-center gap-2">
             {commonLinks}
           </ul>
@@ -162,6 +164,12 @@ const Navbar = () => {
                     <HiOutlineX size={24} />
                   </button>
                 </div>
+                
+                {/* Search in Mobile Menu */}
+                <div className="mb-4 pb-4 border-b border-base-200">
+                  <SmartSearch isMobile={true} />
+                </div>
+                
                 <ul className="menu menu-vertical gap-2">
                   {commonLinks}
                   {authLinks}
