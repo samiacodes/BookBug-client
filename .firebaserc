@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "book-nest-202517"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }
