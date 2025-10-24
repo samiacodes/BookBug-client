@@ -38,11 +38,11 @@ const NavBar = () => {
         className={({ isActive }) =>
           isActive
             ? scrolled
-              ? "text-white font-semibold"
-              : "text-green-900 font-semibold"
+              ? "text-primary-content font-semibold"
+              : "text-primary font-semibold"
             : scrolled
-            ? "hover:text-green-300 text-white"
-            : "hover:text-green-600 text-green-900"
+            ? "hover:text-accent text-primary-content"
+            : "hover:text-accent text-base-content"
         }
       >
         {route.name}
@@ -53,7 +53,7 @@ const NavBar = () => {
   return (
     <div
       className={`navbar sticky top-0 px-4 lg:px-10 z-50 shadow-md transition-colors duration-300 ${
-        scrolled ? "bg-green-900" : "bg-transparent"
+        scrolled ? "bg-primary" : "bg-transparent"
       }`}
     >
       {/* Left: Logo */}
@@ -61,14 +61,14 @@ const NavBar = () => {
         <Link
           to="/"
           className={`text-xl ml-2 font-semibold transition-colors duration-300 ${
-            scrolled ? "text-white" : "text-green-900"
+            scrolled ? "text-primary-content" : "text-primary"
           }`}
         >
           🌿The Garden Hub
         </Link>
         {/* Mobile Menu */}
         <ul
-          className={`absolute top-16 right-4 z-40 w-52 bg-white shadow-md px-6 py-4 space-y-2 rounded-md transition-transform duration-300 ease-in-out lg:hidden ${
+          className={`absolute top-16 right-4 z-40 w-52 bg-base-100 shadow-md px-6 py-4 space-y-2 rounded-md transition-transform duration-300 ease-in-out lg:hidden ${
             open
               ? "translate-y-0 opacity-100"
               : "-translate-y-20 opacity-0 pointer-events-none"
@@ -79,7 +79,7 @@ const NavBar = () => {
             <li>
               <Link
                 to="/login"
-                className="text-green-500 font-semibold"
+                className="text-primary font-semibold"
                 onClick={() => setOpen(false)}
               >
                 Login / SignUp
@@ -123,7 +123,7 @@ const NavBar = () => {
       {/* Right: User Avatar & Logout & Hamburger */}
       <div className="navbar-end relative items-center space-x-2 flex">
         <div
-          className={`lg:hidden ${scrolled ? "text-white" : "text-green-900"}`}
+          className={`lg:hidden ${scrolled ? "text-primary-content" : "text-primary"}`}
         >
           <Hamburger toggled={open} toggle={setOpen} size={20} />
         </div>
@@ -136,23 +136,23 @@ const NavBar = () => {
               <img
                 src={user?.photoURL || "/default-avatar.png"}
                 alt={user?.displayName || "Guest"}
-                className="w-12 h-12 rounded-full border border-green-500"
+                className="w-12 h-12 rounded-full border border-primary"
               />
-              <div className="absolute left-1/2 -translate-x-1/2 -mt-6 px-2 py-1 rounded bg-white text-sm text-green-500 shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-40">
+              <div className="absolute left-1/2 -translate-x-1/2 -mt-6 px-2 py-1 rounded bg-base-100 text-sm text-primary shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-40">
                 {user.displayName || "Guest"}
               </div>
             </div>
           ) : (
             <Link
               to="/login"
-              className="text-green-500 font-semibold hover:underline transition-colors"
+              className="text-primary font-semibold hover:underline transition-colors"
             >
               Login / Register
             </Link>
           )}
 
           {showLogout && (
-            <div className="absolute top-full right-0 mt-2 bg-white px-4 py-2 rounded shadow z-50">
+            <div className="absolute top-full right-0 mt-2 bg-base-100 px-4 py-2 rounded shadow z-50">
               <button
                 onClick={() => {
                   handleLogout(navigate);

@@ -6,7 +6,7 @@ const Footer = () => {
   const publicLinks = navigationData.filter((link) => !link.private);
 
   return (
-    <footer className="bg-green-900 text-white py-10 mt-10">
+    <footer className="bg-primary text-primary-content py-10 mt-10">
       <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
         {/* Contact Section */}
         <div>
@@ -44,27 +44,27 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaFacebookF className="hover:text-green-300 transition" />
+              <FaFacebookF className="hover:text-accent transition" />
             </a>
             <a
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaTwitter className="hover:text-green-300 transition" />
+              <FaTwitter className="hover:text-accent transition" />
             </a>
             <a
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaInstagram className="hover:text-green-300 transition" />
+              <FaInstagram className="hover:text-accent transition" />
             </a>
           </div>
         </div>
       </div>
 
-      <div className="text-center text-xs mt-6 text-green-200">
+      <div className="text-center text-xs mt-6 opacity-80">
         © {new Date().getFullYear()} 🌿The Garden Hub. All rights reserved.
       </div>
     </footer>

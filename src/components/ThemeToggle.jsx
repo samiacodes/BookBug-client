@@ -26,9 +26,9 @@ const ThemeToggle = () => {
       title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
     >
       {theme === "light" ? (
-        <HiMoon className="w-6 h-6 text-indigo-600" />
+        <HiMoon className="w-6 h-6 text-primary" />
       ) : (
-        <HiSun className="w-6 h-6 text-amber-400" />
+        <HiSun className="w-6 h-6 text-accent" />
       )}
     </button>
   );

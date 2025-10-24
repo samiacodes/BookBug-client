@@ -11,10 +11,6 @@
 /* Custom Theme Variables - Strict 60/30/10 Ratio */
 :root {
   /* Only Three Colors: Background (60%), Primary (30%), Accent (10%) */
-  --color-background-60: 249 250 251; /* slate-50 - Backgrounds (60%) */
-  --color-primary-30: 99 102 241; /* indigo-500 - Main actions (30%) */
-  --color-accent-10: 245 158 11; /* amber-500 - Highlights (10%) */
-  
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
@@ -27,42 +23,42 @@
 [data-theme="light"] {
   color-scheme: light;
   /* Backgrounds (60%) */
-  --b1: 255 255 255; /* white */
-  --b2: 249 250 251; /* slate-50 */
-  --b3: 241 245 249; /* slate-100 */
-  --bc: 15 23 42; /* slate-900 - text */
+  --b1: 255 255 255;
+  --b2: 249 250 251;
+  --b3: 241 245 249;
+  --bc: 15 23 42;
   
   /* Primary (30%) - Main interactive elements */
-  --p: 99 102 241; /* indigo-500 */
-  --pc: 255 255 255; /* white */
+  --p: 99 102 241;
+  --pc: 255 255 255;
   
   /* Accent (10%) - Highlights */
-  --a: 245 158 11; /* amber-500 */
-  --ac: 255 255 255; /* white */
+  --a: 245 158 11;
+  --ac: 255 255 255;
   
   /* Neutral - for borders */
-  --n: 51 65 85; /* slate-700 */
+  --n: 51 65 85;
   --nc: 248 250 252;
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
   /* Backgrounds (60%) */
-  --b1: 15 23 42; /* slate-900 */
-  --b2: 30 41 59; /* slate-800 */
-  --b3: 51 65 85; /* slate-700 */
-  --bc: 248 250 252; /* slate-50 - text */
+  --b1: 15 23 42;
+  --b2: 30 41 59;
+  --b3: 51 65 85;
+  --bc: 248 250 252;
   
   /* Primary (30%) - Main interactive elements */
-  --p: 129 140 248; /* indigo-400 */
+  --p: 129 140 248;
   --pc: 15 23 42;
   
   /* Accent (10%) - Highlights */
-  --a: 251 191 36; /* amber-400 */
+  --a: 251 191 36;
   --ac: 15 23 42;
   
   /* Neutral - for borders */
-  --n: 71 85 105; /* slate-600 */
+  --n: 71 85 105;
   --nc: 226 232 240;
 }
 
