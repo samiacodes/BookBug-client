@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import BookCard from "../../components/BookCard";
 
 const CategoryBooks = () => {
   const { categoryName } = useParams();
@@ -17,36 +17,25 @@ const CategoryBooks = () => {
   }, [categoryName]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold mb-6">
-        Books in category: {categoryName}
-      </h2>
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="mb-8">
+        <h2 className="text-4xl font-bold text-base-content mb-2">
+          {categoryName}
+        </h2>
+        <div className="h-1 w-20 bg-primary rounded"></div>
+        <p className="text-base-content/60 mt-2">Browse books in this category</p>
+      </div>
 
       {books.length === 0 ? (
-        <p>No books found in this category.</p>
+        <div className="text-center py-16">
+          <div className="bg-base-100 rounded-xl p-12 shadow-sm border border-base-300">
+            <p className="text-base-content/60 text-lg">No books found in this category.</p>
+          </div>
+        </div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {books.map((book) => (
-            <div
-              key={book._id}
-              className="bg-white shadow-md p-4 rounded hover:shadow-xl"
-            >
-              <img
-                src={book.image}
-                alt={book.name}
-                className="w-full h-52 object-cover rounded"
-              />
-              <h3 className="text-xl font-semibold mt-3">{book.title}</h3>
-              <p>Author: {book.author}</p>
-              <p>Rating: ⭐ {book.rating}</p>
-              <p>Quantity: {book.quantity}</p>
-              <Link
-                to={`/books/${book._id}`}
-                className="btn btn-sm btn-primary mt-3"
-              >
-                Details
-              </Link>
-            </div>
+            <BookCard key={book._id} book={book} />
           ))}
         </div>
       )}

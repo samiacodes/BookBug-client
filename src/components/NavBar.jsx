@@ -105,7 +105,7 @@ const NavBar = () => {
                     setShowLogout(false);
                     setOpen(false);
                   }}
-                  className="text-error mt-2 block"
+                  className="text-accent mt-2 block"
                 >
                   Logout
                 </button>
@@ -158,7 +158,7 @@ const NavBar = () => {
                   handleLogout(navigate);
                   setShowLogout(false);
                 }}
-                className="text-error text-sm"
+                className="text-accent text-sm"
               >
                 Logout
               </button>

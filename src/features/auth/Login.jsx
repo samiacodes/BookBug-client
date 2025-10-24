@@ -2,11 +2,11 @@ import React, {  useState } from "react";
 import Lottie from "lottie-react";
 import loginAnimation from "../../assets/lotties/signin.json";
 import { Link, useNavigate } from "react-router-dom";
-
 import { toast } from "react-toastify";
 import { auth, signInWithEmailAndPassword } from "../../firebase/firebase.init";
 import { AuthContext } from "../../contexts/AuthContexts/AuthContext";
 import SocialLogin from "../shared/SocialLogin";
+import Button from "../../components/Button";
 
 const Login = () => {
   // const { setUser } = useContext(AuthContext);
@@ -41,61 +41,81 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen grid md:grid-cols-2 bg-base-100">
-      {/* Left */}
-      <div className="flex flex-col justify-center items-center p-10">
-        <div className="w-full space-y-4">
-          <h2 className="text-3xl font-bold text-center">
-            Login to Your Account
-          </h2>
+    <div className="min-h-screen grid md:grid-cols-2 bg-base-200">
+      {/* Left - Form Section */}
+      <div className="flex flex-col justify-center items-center p-10 bg-base-100">
+        <div className="w-full max-w-md space-y-6">
+          <div className="text-center space-y-2">
+            <h2 className="text-4xl font-bold text-base-content">
+              Welcome Back
+            </h2>
+            <p className="text-base-content/60">Login to your account</p>
+          </div>
+          
           <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              className="input input-bordered w-full"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              className="input input-bordered w-full"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-medium">Email</span>
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-medium">Password</span>
+              </label>
+              <input
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            
             {error && (
-              <p className="text-red-500 text-sm text-center">{error}</p>
+              <div className="alert bg-primary/10 border border-primary rounded-lg shadow-sm">
+                <span className="text-sm text-base-content">{error}</span>
+              </div>
             )}
-            <button
+            
+            <Button
               type="submit"
-              className="btn bg-gradient-to-r from-green-400 to-green-900 text-white border-none w-full hover:from-green-900 hover:to-green-500"
+              variant="primary"
+              fullWidth
             >
               Login
-            </button>
+            </Button>
           </form>
 
           {/* Social Login */}
           <SocialLogin />
 
-          <p className="text-sm text-center mt-2">
-            Don’t have an account?{" "}
-            <Link to="/register" className="text-green-600 font-semibold">
+          <p className="text-sm text-center text-base-content/70">
+            Don't have an account?{" "}
+            <Link to="/register" className="text-primary font-semibold hover:text-primary/80 transition-colors">
               Register
             </Link>
           </p>
         </div>
       </div>
 
-      {/* Right */}
-      <div className="flex items-center justify-center bg-white p-6">
+      {/* Right - Illustration */}
+      <div className="hidden md:flex items-center justify-center bg-base-200 p-6">
         <Lottie
           animationData={loginAnimation}
           loop
-          className="w-full"
+          className="w-full max-w-lg"
         />
       </div>
     </div>

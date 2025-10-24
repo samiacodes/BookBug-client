@@ -18,13 +18,16 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-16">
       <Banner />
 
       {/* Categories */}
-      <section className="max-w-7xl mx-auto">
-        <Title text="Book Categories" level={2} />
-        <div className="grid md:grid-cols-4 gap-6">
+      <section className="max-w-7xl mx-auto px-4">
+        <div className="text-center mb-8">
+          <Title text="Book Categories" level={2} />
+          <p className="text-base-content/60 mt-2">Explore our diverse collection</p>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {categories.map((cat, i) => (
             <CategoryCard key={i} category={cat} />
           ))}
@@ -32,26 +35,28 @@ const Home = () => {
       </section>
 
       {/* Book List */}
-      <section className="max-w-7xl mx-auto">
-        <Title text="Popular Books" level={2} />
+      <section className="max-w-7xl mx-auto px-4">
+        <div className="text-center mb-8">
+          <Title text="Popular Books" level={2} />
+          <p className="text-base-content/60 mt-2">Discover trending titles</p>
+        </div>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="grid md:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {books.map((book) => (
+          {books.slice(0, 6).map((book) => (
             <BookCard key={book._id} book={book} />
           ))}
         </motion.div>
       </section>
 
       {/* Extra Section 1 */}
-      <section className="bg-gray-100 py-6 px-6">
+      <section className="bg-base-100 py-12 px-6 shadow-sm">
         <div className="max-w-7xl mx-auto">
-          <h3 className="text-xl font-bold mb-2">Why Reading is Important?</h3>
-          <Title text="Popular Books" level={3} />
-          <p>
+          <h3 className="text-2xl font-bold mb-4 text-base-content">Why Reading is Important?</h3>
+          <p className="text-base-content/70 leading-relaxed">
             Reading strengthens your brain, reduces stress, and builds your
             vocabulary. It makes you a better thinker and speaker.
           </p>
@@ -59,14 +64,14 @@ const Home = () => {
       </section>
 
       {/* Extra Section 2 */}
-      <section className="bg-gray-200 py-6 px-6">
+      <section className="bg-base-100 py-12 px-6 rounded-2xl max-w-7xl mx-auto">
         <div className="max-w-7xl mx-auto">
-          <h3 className="text-xl font-bold mb-2">Newly Added Genres</h3>
-          <ul className="list-disc pl-6">
-            <li>Modern Romance</li>
-            <li>Philosophical Fiction</li>
-            <li>Young Adult (YA)</li>
-            <li>Autobiographies</li>
+          <h3 className="text-2xl font-bold mb-4 text-base-content">Newly Added Genres</h3>
+          <ul className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <li className="flex items-center gap-2 text-base-content/80"><span className="w-2 h-2 bg-accent rounded-full"></span>Modern Romance</li>
+            <li className="flex items-center gap-2 text-base-content/80"><span className="w-2 h-2 bg-accent rounded-full"></span>Philosophical Fiction</li>
+            <li className="flex items-center gap-2 text-base-content/80"><span className="w-2 h-2 bg-accent rounded-full"></span>Young Adult (YA)</li>
+            <li className="flex items-center gap-2 text-base-content/80"><span className="w-2 h-2 bg-accent rounded-full"></span>Autobiographies</li>
           </ul>
         </div>
       </section>

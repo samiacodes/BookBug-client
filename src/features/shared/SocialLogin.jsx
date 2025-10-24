@@ -23,15 +23,15 @@ const SocialLogin = ({ from }) => {
     <div className="w-full mx-auto mt-6">
       {/* Divider */}
       <div className="flex items-center mb-4">
-        <div className="flex-grow border-t border-gray-300"></div>
-        <span className="mx-4 text-gray-500 font-semibold">OR</span>
-        <div className="flex-grow border-t border-gray-300"></div>
+        <div className="flex-grow border-t border-base-300"></div>
+        <span className="mx-4 text-base-content/60 font-semibold">OR</span>
+        <div className="flex-grow border-t border-base-300"></div>
       </div>
 
       {/* Google Sign-In Button */}
       <button
         onClick={handleGoogleSignIn}
-        className="btn btn-outline btn-success text-black w-full flex items-center justify-center gap-2"
+        className="btn btn-outline btn-primary w-full flex items-center justify-center gap-2 rounded-lg hover:bg-primary hover:text-primary-content transition-all duration-200"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

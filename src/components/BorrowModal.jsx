@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
+import Button from "./Button";
 
 const BorrowModal = ({ book, onClose, onBorrowSuccess }) => {
   const { user } = useAuth();
@@ -74,53 +75,90 @@ const BorrowModal = ({ book, onClose, onBorrowSuccess }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded shadow-md w-[320px]">
-        <h2 className="text-xl font-bold mb-2">{book.name}</h2>
-        <p>Author: {book.author}</p>
-        <p>Category: {book.category}</p>
-
-        {/* Display user info */}
-        <input
-          type="text"
-          value={user.displayName}
-          disabled
-          className="input input-bordered w-full my-2"
-        />
-        <input
-          type="email"
-          value={user.email}
-          disabled
-          className="input input-bordered w-full mb-2"
-        />
-
-        {/* Return Date Picker */}
-        <input
-          type="date"
-          required
-          value={returnDate}
-          onChange={(e) => setReturnDate(e.target.value)}
-          className="input input-bordered w-full mb-2"
-        />
-
-        <div className="mt-4 flex flex-col gap-2">
-          <button
-            className="btn bg-blue-600 text-white"
-            onClick={handleBorrow}
-            disabled={loading}
-          >
-            {loading ? "Borrowing..." : "Confirm Borrow"}
-          </button>
-          <button
-            className="btn bg-gray-400 text-white"
-            onClick={onClose}
-            disabled={loading}
-          >
-            Cancel
-          </button>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+      <div className="bg-base-100 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-base-300">
+        <h2 className="text-2xl font-bold mb-4 text-base-content">{book.name}</h2>
+        <div className="space-y-3 mb-6">
+          <div className="flex items-center gap-2">
+            <span className="font-medium text-base-content/70">Author:</span>
+            <span className="text-base-content">{book.author}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="font-medium text-base-content/70">Category:</span>
+            <span className="badge badge-primary">{book.category}</span>
+          </div>
         </div>
 
-        {message && <p className="mt-3 text-center text-red-600">{message}</p>}
+        <div className="space-y-4">
+          {/* Display user info */}
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-medium">Your Name</span>
+            </label>
+            <input
+              type="text"
+              value={user.displayName}
+              disabled
+              className="input input-bordered w-full bg-base-200 rounded-lg"
+            />
+          </div>
+          
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-medium">Your Email</span>
+            </label>
+            <input
+              type="email"
+              value={user.email}
+              disabled
+              className="input input-bordered w-full bg-base-200 rounded-lg"
+            />
+          </div>
+
+          {/* Return Date Picker */}
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-medium">Return Date</span>
+            </label>
+            <input
+              type="date"
+              required
+              value={returnDate}
+              onChange={(e) => setReturnDate(e.target.value)}
+              className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+            />
+          </div>
+        </div>
+
+        <div className="mt-6 flex flex-col gap-3">
+          <Button
+            variant="primary"
+            fullWidth
+            loading={loading}
+            onClick={handleBorrow}
+          >
+            Confirm Borrow
+          </Button>
+          
+          <Button
+            variant="outline"
+            fullWidth
+            disabled={loading}
+            onClick={onClose}
+          >
+            Cancel
+          </Button>
+        </div>
+
+        {message && (
+          <div className={`mt-4 alert rounded-lg shadow-sm border ${
+            message.includes("success") 
+              ? "bg-accent/10 border-accent text-accent-content" 
+              : "bg-primary/10 border-primary text-primary-content"
+          }`}>
+            <span className="text-sm">{message}</span>
+          </div>
+        )}
       </div>
     </div>
   );

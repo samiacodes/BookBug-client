@@ -11,6 +11,7 @@ import {
 } from "../../firebase/firebase.init";
 import SocialLogin from "../shared/SocialLogin";
 import Title from "../../components/Title";
+import Button from "../../components/Button";
 
 const Register = () => {
   // const { setUser } = useContext(AuthContext);
@@ -59,75 +60,114 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen max-w-full mx-auto grid md:grid-cols-2 bg-white">
-      {/* Left Side */}
-      <div className="flex flex-col justify-center items-center p-10">
-        <div className="w-full max-w-md space-y-4">
-          <Title text="Create an Account" level={2} />
+    <div className="min-h-screen grid md:grid-cols-2 bg-base-200">
+      {/* Left - Form Section */}
+      <div className="flex flex-col justify-center items-center p-10 bg-base-100">
+        <div className="w-full max-w-md space-y-6">
+          <div className="text-center space-y-2">
+            <h2 className="text-4xl font-bold text-base-content">
+              Create an Account
+            </h2>
+            <p className="text-base-content/60">Join our reading community</p>
+          </div>
+          
           <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="text"
-              name="name"
-              placeholder="Full Name"
-              className="input input-bordered w-full"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              className="input input-bordered w-full"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="url"
-              name="photoURL"
-              placeholder="Photo URL"
-              className="input input-bordered w-full"
-              value={formData.photoURL}
-              onChange={handleChange}
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              className="input input-bordered w-full"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-medium">Full Name</span>
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Enter your full name"
+                className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-medium">Email</span>
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-medium">Photo URL</span>
+              </label>
+              <input
+                type="url"
+                name="photoURL"
+                placeholder="Enter photo URL (optional)"
+                className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                value={formData.photoURL}
+                onChange={handleChange}
+              />
+            </div>
+            
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-medium">Password</span>
+              </label>
+              <input
+                type="password"
+                name="password"
+                placeholder="Create a strong password"
+                className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+              <label className="label">
+                <span className="label-text-alt text-base-content/60">
+                  Min 8 chars, 1 uppercase, 1 lowercase, 1 special character
+                </span>
+              </label>
+            </div>
+            
             {error && (
-              <p className="text-red-500 text-sm text-center">{error}</p>
+              <div className="alert bg-primary/10 border border-primary rounded-lg shadow-sm">
+                <span className="text-sm text-base-content">{error}</span>
+              </div>
             )}
-            <button
+            
+            <Button
               type="submit"
-              className="btn bg-gradient-to-r from-green-400 to-blue-500 text-white border-none w-full hover:from-green-500 hover:to-blue-600"
+              variant="primary"
+              fullWidth
             >
               Register
-            </button>
+            </Button>
           </form>
 
           <SocialLogin />
 
-          <p className="text-sm text-center mt-2">
+          <p className="text-sm text-center text-base-content/70">
             Already have an account?{" "}
-            <Link to="/login" className="text-green-600 font-semibold">
+            <Link to="/login" className="text-primary font-semibold hover:text-primary/80 transition-colors">
               Login
             </Link>
           </p>
         </div>
       </div>
 
-      {/* Right Side */}
-      <div className="flex items-center justify-center bg-white p-6">
+      {/* Right - Illustration */}
+      <div className="hidden md:flex items-center justify-center bg-base-200 p-6">
         <Lottie
           animationData={animationImage}
           loop
-          className="w-full"
+          className="w-full max-w-lg"
         />
       </div>
     </div>

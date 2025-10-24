@@ -1,7 +1,70 @@
-@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&display=swap");
 @import "tailwindcss";
+
+/* DaisyUI Configuration - Custom Themes with 60/30/10 Color Ratio */
 @plugin "daisyui";
+@daisyui base(true);
+@daisyui styled(true);
+@daisyui utils(true);
+
+/* Custom Theme Variables - Strict 60/30/10 Ratio */
+:root {
+  /* Only Three Colors: Background (60%), Primary (30%), Accent (10%) */
+  --color-background-60: 249 250 251; /* slate-50 - Backgrounds (60%) */
+  --color-primary-30: 99 102 241; /* indigo-500 - Main actions (30%) */
+  --color-accent-10: 245 158 11; /* amber-500 - Highlights (10%) */
+  
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  /* Backgrounds (60%) */
+  --b1: 255 255 255; /* white */
+  --b2: 249 250 251; /* slate-50 */
+  --b3: 241 245 249; /* slate-100 */
+  --bc: 15 23 42; /* slate-900 - text */
+  
+  /* Primary (30%) - Main interactive elements */
+  --p: 99 102 241; /* indigo-500 */
+  --pc: 255 255 255; /* white */
+  
+  /* Accent (10%) - Highlights */
+  --a: 245 158 11; /* amber-500 */
+  --ac: 255 255 255; /* white */
+  
+  /* Neutral - for borders */
+  --n: 51 65 85; /* slate-700 */
+  --nc: 248 250 252;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  /* Backgrounds (60%) */
+  --b1: 15 23 42; /* slate-900 */
+  --b2: 30 41 59; /* slate-800 */
+  --b3: 51 65 85; /* slate-700 */
+  --bc: 248 250 252; /* slate-50 - text */
+  
+  /* Primary (30%) - Main interactive elements */
+  --p: 129 140 248; /* indigo-400 */
+  --pc: 15 23 42;
+  
+  /* Accent (10%) - Highlights */
+  --a: 251 191 36; /* amber-400 */
+  --ac: 15 23 42;
+  
+  /* Neutral - for borders */
+  --n: 71 85 105; /* slate-600 */
+  --nc: 226 232 240;
+}
 
 .playfair-display-logo {
   font-family: "Playfair Display", serif;
@@ -11,9 +74,55 @@
 }
 
 body {
-  font-family: "Merriweather", serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-optical-sizing: auto;
-  font-weight: normal;
+  font-weight: 400;
   font-style: normal;
-  font-variation-settings: "wdth" 100;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Modern Design System Utilities */
+.card-modern {
+  @apply bg-base-100 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-base-300;
+}
+
+.btn-modern {
+  @apply rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md;
+}
+
+.input-modern {
+  @apply rounded-lg border-2 border-base-300 focus:border-primary focus:outline-none transition-all duration-200;
+}
+
+/* Unified Button Styles - Override any inconsistencies */
+.btn {
+  @apply rounded-lg font-medium transition-all duration-200;
+}
+
+.btn:not(.btn-circle):not(.btn-square) {
+  @apply px-6 py-3;
+}
+
+.btn-sm {
+  @apply px-4 py-2 text-sm;
+}
+
+.btn-lg {
+  @apply px-8 py-4 text-lg;
+}
+
+/* Ensure consistent hover effects */
+.btn:hover:not(:disabled) {
+  @apply shadow-md transform scale-[1.02];
+}
+
+.btn:active:not(:disabled) {
+  @apply transform scale-[0.98];
+}
+
+/* Smooth transitions for theme switching */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }

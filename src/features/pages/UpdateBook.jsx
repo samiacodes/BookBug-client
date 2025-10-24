@@ -4,6 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Spinner from "../shared/Spinner";
 import Title from "../../components/Title";
+import Button from "../../components/Button";
 
 const UpdateBook = () => {
   const { id } = useParams();
@@ -53,53 +54,68 @@ const UpdateBook = () => {
   if (!book) return <Spinner/>;
 
   return (
-    <div className="">
-      <div className="max-w-full mx-auto p-6 bg-white shadow-md rounded-lg mt-8">
-        <Title text="Update Book" level={2} />
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label>Image URL</label>
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="bg-base-100 p-8 shadow-xl rounded-2xl border border-base-300">
+        <div className="mb-6">
+          <Title text="Update Book" level={2} />
+          <p className="text-base-content/60 mt-2">Edit book information</p>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-medium">Image URL</span>
+            </label>
             <input
               type="text"
               name="image"
               required
               value={book.image}
               onChange={handleChange}
-              className="input input-bordered w-full"
+              className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+              placeholder="Enter image URL"
             />
           </div>
 
-          <div>
-            <label>Book Name</label>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-medium">Book Name</span>
+            </label>
             <input
               type="text"
               name="name"
               required
               value={book.name}
               onChange={handleChange}
-              className="input input-bordered w-full"
+              className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+              placeholder="Enter book name"
             />
           </div>
 
-          <div>
-            <label>Author Name</label>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-medium">Author Name</span>
+            </label>
             <input
               type="text"
               name="author"
               required
               value={book.author}
               onChange={handleChange}
-              className="input input-bordered w-full"
+              className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+              placeholder="Enter author name"
             />
           </div>
 
-          <div>
-            <label>Category</label>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-medium">Category</span>
+            </label>
             <select
               name="category"
               value={book.category}
               onChange={handleChange}
-              className="select select-bordered w-full"
+              className="select select-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
             >
               <option value="">Select category</option>
               <option value="Novel">Novel</option>
@@ -110,8 +126,10 @@ const UpdateBook = () => {
             </select>
           </div>
 
-          <div>
-            <label>Rating (1–5)</label>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-medium">Rating (1–5)</span>
+            </label>
             <input
               type="number"
               name="rating"
@@ -120,13 +138,19 @@ const UpdateBook = () => {
               required
               value={book.rating}
               onChange={handleChange}
-              className="input input-bordered w-full"
+              className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
             />
           </div>
 
-          <button type="submit" className="btn btn-success w-full">
-            Submit Update
-          </button>
+          <div className="pt-4">
+            <Button
+              type="submit"
+              variant="primary"
+              fullWidth
+            >
+              Update Book
+            </Button>
+          </div>
         </form>
       </div>
     </div>
