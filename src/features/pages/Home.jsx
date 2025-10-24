@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import BookCard from "../../components/BookCard";
 import CategoryCard from "../../components/CategoryCard";
+import ReviewList from "../../components/ReviewList";
 import Banner from "../shared/Banner";
 import { motion } from "framer-motion";
 import Title from "../../components/Title";
@@ -52,15 +53,10 @@ const Home = () => {
         </motion.div>
       </section>
 
-      {/* Extra Section 1 */}
-      <section className="bg-base-100 py-12 px-6 shadow-sm">
-        <div className="max-w-7xl mx-auto">
-          <h3 className="text-2xl font-bold mb-4 text-base-content">Why Reading is Important?</h3>
-          <p className="text-base-content/70 leading-relaxed">
-            Reading strengthens your brain, reduces stress, and builds your
-            vocabulary. It makes you a better thinker and speaker.
-          </p>
-        </div>
+
+      {/* Community Reviews Section - DYNAMIC */}
+      <section className="max-w-7xl mx-auto px-4">
+        <ReviewList />
       </section>
 
       {/* Extra Section 2 */}

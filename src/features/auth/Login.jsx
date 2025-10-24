@@ -30,9 +30,8 @@ const Login = () => {
       .then(async (res) => {
         const token = await res.user.getIdToken();
         localStorage.setItem("token", token);
-        // setUser(res.user);
         toast.success("Login successful!");
-        navigate("/");
+        navigate("/"); // Redirect to Home page
       })
       .catch((err) => {
         setError(err.message);

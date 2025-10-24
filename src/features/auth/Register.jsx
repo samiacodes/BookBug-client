@@ -49,9 +49,8 @@ const Register = () => {
         await updateProfile(res.user, { displayName: name, photoURL });
         const token = await res.user.getIdToken();
         localStorage.setItem("token", token);
-        // setUser(res.user);
         toast.success("Registration successful!");
-        navigate("/");
+        navigate("/"); // Redirect to Home page
       })
       .catch((err) => {
         setError(err.message);
