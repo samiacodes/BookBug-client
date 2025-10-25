@@ -15,12 +15,12 @@ const Navbar = () => {
   const navLinks = [
     { path: "/", label: "Home", icon: "home" },
     { path: "/all-books", label: "All Books", icon: "books" },
-    { path: "/addbooks", label: "Categories", icon: "categories" },
   ];
 
   return (
+      <div className="max-w-7xl w-full mx-auto px-6 lg:px-8 py-10 ">
     <div className="navbar bg-base-100 shadow-sm border-b border-base-300 sticky top-0 z-50">
-      <div className="navbar-start">
+        <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
             <Icon name="menu" />
@@ -132,6 +132,7 @@ const Navbar = () => {
             </Link>
           </div>
         )}
+      </div>
       </div>
     </div>
   );
