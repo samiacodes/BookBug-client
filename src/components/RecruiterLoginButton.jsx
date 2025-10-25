@@ -30,7 +30,7 @@ const RecruiterLoginButton = () => {
         onClick={handleRecruiterLogin}
         fullWidth
       >
-        🎯 Recruiter Access
+        Recruiter Access
       </Button>
     </div>
   );
