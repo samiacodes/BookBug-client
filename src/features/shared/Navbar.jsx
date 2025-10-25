@@ -1,179 +1,141 @@
-import { Link, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import Icon from "../../components/Icon";
-import { useState, useContext, useEffect } from "react";
+import { useContext } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContexts/AuthContext";
-import { handleLogout } from "../../helpers/authHelper";
-import ThemeToggle from "../../components/ThemeToggle";
-import SmartSearch from "../../components/SmartSearch";
+import Icon from "../../components/Icon";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const { user, signOutUser } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { user, role } = useContext(AuthContext);
 
-  const linkClass =
-    "flex items-center gap-2 font-medium text-base-content hover:text-primary transition-all duration-200 px-3 py-2 rounded-lg hover:bg-base-200";
+  const handleLogout = () => {
+    signOutUser();
+    navigate("/");
+  };
 
-  const commonLinks = (
-    <>
-      <li>
-        <Link to="/" className={linkClass}>
-          <Icon name="home" /> Home
-        </Link>
-      </li>
-      <li>
-        <Link to="/all-books" className={linkClass}>
-          <Icon name="books" /> All Books
-        </Link>
-      </li>
-      <li>
-        <Link to="/add-book" className={linkClass}>
-          <Icon name="plus" /> Add Book
-        </Link>
-      </li>
-      <li>
-        <Link to="/borrowed-books" className={linkClass}>
-          <Icon name="clipboardList" /> Borrowed
-        </Link>
-      </li>
-      {role === "admin" && (
-        <li>
-          <Link to="/admin" className={linkClass}>
-            <Icon name="settings" /> Admin Dashboard
-          </Link>
-        </li>
-      )}
-    </>
-  );
-
-  const authLinks = !user ? (
-    <>
-      <li>
-        <Link
-          to="/login"
-          className="btn btn-sm btn-primary text-primary-content border-none flex gap-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
-        >
-          <Icon name="login" /> Login
-        </Link>
-      </li>
-      <li>
-        <Link
-          to="/register"
-          className="btn btn-sm btn-outline btn-primary flex items-center gap-2 rounded-lg hover:bg-primary hover:text-primary-content transition-all duration-200"
-        >
-          <Icon name="userAdd" /> Register
-        </Link>
-      </li>
-    </>
-  ) : (
-    <>
-      <li className="relative group flex items-center">
-        <Link to="/profile" className="self-center overflow-hidden ring-2 ring-primary ring-offset-2 rounded-full hover:ring-accent transition-all duration-300">
-          <img
-            src={user?.photoURL || "/default-avatar.png"}
-            alt={user?.displayName || "User"}
-            className="object-cover rounded-full w-10 h-10"
-          />
-        </Link>
-        <div className="absolute left-1/2 -translate-x-1/2 top-[115%] opacity-0 group-hover:opacity-100 bg-base-100 text-base-content text-sm px-3 py-2 rounded-lg shadow-lg transition-all duration-200 whitespace-nowrap z-50 border border-base-300">
-          {user.displayName || "Anonymous"}
-        </div>
-      </li>
-      <li>
-        <button
-          onClick={() => handleLogout(navigate)}
-          className="btn btn-sm btn-accent border-none flex items-center gap-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
-        >
-          <Icon name="logout" /> Logout
-        </button>
-      </li>
-    </>
-  );
+  const navLinks = [
+    { path: "/", label: "Home", icon: "home" },
+    { path: "/all-books", label: "All Books", icon: "books" },
+  ];
 
   return (
-    <div className="bg-base-100 shadow-lg border-b border-base-300 sticky top-0 z-50 backdrop-blur-sm bg-opacity-95">
-      <div className="navbar max-w-7xl mx-auto px-6 lg:px-8 py-3">
-        {/* Logo */}
-        <div className="navbar-start">
-          <Link to="/" className="group flex items-center text-2xl font-bold gap-2">
-            <Icon name="bookOpen" className="w-8 h-8 text-primary group-hover:text-accent transition-colors duration-300" />
-            <span className="text-2xl font-playfair text-primary group-hover:text-accent transition-colors duration-300">
+    <div className="navbar bg-base-100 shadow-sm border-b border-base-300 sticky top-0 z-50">
+      <div className="navbar-start">
+        <div className="dropdown">
+          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+            <Icon name="menu" />
+          </div>
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+          >
+            {navLinks.map((link) => (
+              <li key={link.path}>
+                <NavLink
+                  to={link.path}
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 ${isActive ? "active" : ""}`
+                  }
+                >
+                  <Icon name={link.icon} />
+                  {link.label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <Link to="/" className="btn btn-ghost text-xl">
+          <div className="flex items-center gap-3">
+            <Icon name="bookOpen" className="text-primary text-3xl" />
+            <span className="text-2xl font-bold font-playfair text-primary">
               BookBug
             </span>
-          </Link>
-        </div>
-
-        {/* Desktop Menu */}
-        <div className="navbar-center hidden lg:flex flex-col">
-          {/* Navigation Links */}
-          <ul className="menu menu-horizontal items-center gap-2">
-            {commonLinks}
-          </ul>
-          {/* Search Bar on its own line */}
-          <div className="mb-2 w-full max-w-2xl">
-            <SmartSearch />
           </div>
-        </div>
+        </Link>
+      </div>
 
-        {/* Right Side - Theme Toggle & Auth */}
-        <div className="navbar-end flex items-center gap-3">
-          <ThemeToggle />
-          
-          {/* Desktop Auth */}
-          <div className="hidden lg:flex items-center gap-2">
-            <ul className="menu menu-horizontal items-center gap-2">
-              {authLinks}
+      <div className="navbar-center hidden lg:flex">
+        <ul className="menu menu-horizontal px-1">
+          {navLinks.map((link) => (
+            <li key={link.path}>
+              <NavLink
+                to={link.path}
+                className={({ isActive }) =>
+                  `flex items-center gap-2 ${isActive ? "active" : ""}`
+                }
+              >
+                <Icon name={link.icon} />
+                {link.label}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="navbar-end">
+        {user ? (
+          <div className="dropdown dropdown-end">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle avatar placeholder"
+            >
+              <div className="w-10 rounded-full">
+                <img
+                  src={user?.photoURL || "/default-avatar.png"}
+                  alt="User"
+                  onError={(e) => {
+                    e.target.src = "/default-avatar.png";
+                  }}
+                />
+              </div>
+            </div>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <li>
+                <div className="font-semibold truncate max-w-[180px]">
+                  {user.displayName || user.email}
+                </div>
+              </li>
+              <li className="border-t border-base-300 my-1"></li>
+              {user.email === "admin@bookbug.com" && (
+                <li>
+                  <Link to="/admin" className="flex items-center gap-2">
+                    <Icon name="chart" />
+                    Admin Dashboard
+                  </Link>
+                </li>
+              )}
+              <li>
+                <Link to="/borrowed" className="flex items-center gap-2">
+                  <Icon name="categories" />
+                  Borrowed
+                </Link>
+              </li>
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 text-error"
+                >
+                  <Icon name="logout" />
+                  Logout
+                </button>
+              </li>
             </ul>
           </div>
-          
-          {/* Mobile Hamburger */}
-          <button onClick={toggleMenu} className="btn btn-ghost lg:hidden hover:bg-base-200 rounded-lg">
-            {isOpen ? <Icon name="x" size="lg" className="text-base-content" /> : <Icon name="menu" size="lg" className="text-base-content" />}
-          </button>
-        </div>
-
-        {/* Mobile Slide-out Menu */}
-        <AnimatePresence>
-          {isOpen && (
-            <>
-              <motion.div
-                className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-                onClick={toggleMenu}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.5 }}
-                exit={{ opacity: 0 }}
-              />
-              <motion.div
-                className="fixed top-0 right-0 w-72 h-full bg-base-100 shadow-2xl z-50 p-6 lg:hidden border-l border-base-300"
-                initial={{ x: "100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "100%" }}
-                transition={{ type: "tween", duration: 0.3 }}
-              >
-                <div className="flex justify-between items-center mb-6 pb-4 border-b border-base-300">
-                  <span className="text-lg font-semibold text-primary">
-                    Menu
-                  </span>
-                  <button onClick={toggleMenu} className="btn btn-ghost btn-circle hover:bg-base-200">
-                    <Icon name="x" size="lg" />
-                  </button>
-                </div>
-                
-                {/* Search in Mobile Menu */}
-                <div className="mb-4 pb-4 border-b border-base-200">
-                  <SmartSearch isMobile={true} />
-                </div>
-                
-                <ul className="menu menu-vertical gap-2">
-                  {commonLinks}
-                  {authLinks}
-                </ul>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
+        ) : (
+          <div className="flex gap-2">
+            <Link to="/login" className="btn btn-ghost">
+              <Icon name="login" />
+              Login
+            </Link>
+            <Link to="/register" className="btn btn-ghost">
+              <Icon name="userAdd" />
+              Register
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

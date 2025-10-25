@@ -1,105 +1,114 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
+import Banner from "../shared/Banner";
+import Title from "../../components/Title";
 import BookCard from "../../components/BookCard";
 import CategoryCard from "../../components/CategoryCard";
+import SmartSearch from "../../components/SmartSearch";
 import ReviewList from "../../components/ReviewList";
-import Banner from "../shared/Banner";
-import { motion } from "framer-motion";
-import Title from "../../components/Title";
 
 const Home = () => {
   const [books, setBooks] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+  const baseURL = import.meta.env.VITE_API_URL || 'https://book-bug-server.onrender.com';
 
   useEffect(() => {
-    // Fetch books
-    axios
-      .get(`${baseURL}/books`)
-      .then((res) => setBooks(res.data))
-      .catch((err) => console.error("Book loading error:", err));
-    
-    // Fetch categories
-    axios
-      .get(`${baseURL}/categories`)
-      .then((res) => {
-        setCategories(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Category loading error:", err);
-        setLoading(false);
-      });
-  }, []);
+    const fetchData = async () => {
+      try {
+        // Fetch recent books
+        const booksRes = await axios.get(`${baseURL}/dashboard/recent-books?limit=8`);
+        setBooks(booksRes.data);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="loading loading-spinner loading-lg text-primary"></div>
-      </div>
-    );
-  }
+        // Fetch categories
+        const categoriesRes = await axios.get(`${baseURL}/categories`);
+        setCategories(categoriesRes.data);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [baseURL]);
 
   return (
     <div className="space-y-16">
+      {/* Hero Banner */}
       <Banner />
 
-      {/* Categories */}
+      {/* Recent Books Section */}
       <section className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-8">
-          <Title text="Book Categories" level={2} />
-          <p className="text-base-content/60 mt-2">Explore our diverse collection</p>
+        <div className="text-center mb-12">
+          <Title text="Recent Books" level={2} />
+          <p className="text-base-content/60 mt-2">
+            Discover our latest additions to the library
+          </p>
         </div>
-        {categories.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {categories.map((category) => (
-              <CategoryCard key={category._id} category={category.name} />
-            ))}
+
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <span className="loading loading-spinner loading-lg"></span>
           </div>
         ) : (
-          <div className="text-center py-8">
-            <p className="text-base-content/60">No categories available yet.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {books.map((book) => (
+              <BookCard key={book._id} book={book} />
+            ))}
           </div>
         )}
-      </section>
 
-      {/* Book List */}
-      <section className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-8">
-          <Title text="Popular Books" level={2} />
-          <p className="text-base-content/60 mt-2">Discover trending titles</p>
+        <div className="text-center mt-8">
+          <Link to="/all-books" className="btn btn-primary rounded-full px-8">
+            View All Books
+          </Link>
         </div>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {books.slice(0, 6).map((book) => (
-            <BookCard key={book._id} book={book} />
-          ))}
-        </motion.div>
       </section>
 
+      {/* Categories Section */}
+      <section className="max-w-7xl mx-auto px-4 bg-base-100 py-16 rounded-2xl">
+        <div className="text-center mb-12">
+          <Title text="Browse Categories" level={2} />
+          <p className="text-base-content/60 mt-2">
+            Explore books by your favorite genres
+          </p>
+        </div>
 
-      {/* Community Reviews Section - DYNAMIC */}
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <span className="loading loading-spinner loading-lg"></span>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {categories.slice(0, 6).map((category) => (
+              <CategoryCard key={category._id} category={category} />
+            ))}
+          </div>
+        )}
+
+        <div className="text-center mt-8">
+          <Link to="/all-books" className="btn btn-primary rounded-full px-8">
+            View All Categories
+          </Link>
+        </div>
+      </section>
+
+      {/* Community Reviews Section */}
       <section className="max-w-7xl mx-auto px-4">
         <ReviewList />
       </section>
 
-      {/* Extra Section 2 */}
-      <section className="bg-base-100 py-12 px-6 rounded-2xl max-w-7xl mx-auto">
-        <div className="max-w-7xl mx-auto">
-          <h3 className="text-2xl font-bold mb-4 text-base-content">Newly Added Genres</h3>
-          <ul className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <li className="flex items-center gap-2 text-base-content/80"><span className="w-2 h-2 bg-accent rounded-full"></span>Modern Romance</li>
-            <li className="flex items-center gap-2 text-base-content/80"><span className="w-2 h-2 bg-accent rounded-full"></span>Philosophical Fiction</li>
-            <li className="flex items-center gap-2 text-base-content/80"><span className="w-2 h-2 bg-accent rounded-full"></span>Young Adult (YA)</li>
-            <li className="flex items-center gap-2 text-base-content/80"><span className="w-2 h-2 bg-accent rounded-full"></span>Autobiographies</li>
-          </ul>
+      {/* Smart Search Section */}
+      <section className="max-w-4xl mx-auto px-4 pb-16">
+        <div className="text-center mb-8">
+          <Title text="Find Your Next Read" level={2} />
+          <p className="text-base-content/60 mt-2">
+            Search through our vast collection of books
+          </p>
         </div>
+        <SmartSearch />
       </section>
     </div>
   );

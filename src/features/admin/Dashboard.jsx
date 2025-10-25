@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import Icon from "../../components/Icon";
-import { useNavigate } from "react-router-dom";
+import Title from "../../components/Title";
 import Button from "../../components/Button";
 
 const Dashboard = () => {
@@ -12,94 +13,99 @@ const Dashboard = () => {
     categories: 0,
     totalBanners: 0
   });
-  const [loading, setLoading] = useState(true);
   const [recentBooks, setRecentBooks] = useState([]);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const baseURL = import.meta.env.VITE_API_URL || 'https://book-bug-server.onrender.com';
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
+    const fetchData = async () => {
       try {
-        // Use the same base URL for all requests
-        const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-        
-        console.log('Fetching dashboard data from:', `${baseURL}/dashboard/stats`);
-        
         // Fetch dashboard statistics
         const statsRes = await axios.get(`${baseURL}/dashboard/stats`);
-        console.log('Stats response:', statsRes.data);
         setStats(statsRes.data);
-        
+
         // Fetch recent books
-        const recentBooksRes = await axios.get(`${baseURL}/dashboard/recent-books?limit=3`);
-        console.log('Recent books response:', recentBooksRes.data);
-        setRecentBooks(recentBooksRes.data);
-      } catch (error) {
-        console.error("Error fetching dashboard data:", error);
+        const booksRes = await axios.get(`${baseURL}/dashboard/recent-books?limit=5`);
+        setRecentBooks(booksRes.data);
+      } catch (err) {
+        console.error("Error fetching dashboard data:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchDashboardData();
-  }, []);
+    fetchData();
+  }, [baseURL]);
 
+  // Dashboard stats cards
   const statCards = [
     {
       title: "Total Books",
       value: stats.totalBooks,
       icon: <Icon name="books" className="text-primary" />,
-      color: "bg-primary/10"
+      color: "bg-primary/10",
     },
     {
       title: "Total Users",
       value: stats.totalUsers,
-      icon: <Icon name="users" className="text-accent" />,
-      color: "bg-accent/10"
+      icon: <Icon name="users" className="text-secondary" />,
+      color: "bg-secondary/10",
     },
     {
       title: "Borrowed Books",
       value: stats.borrowedBooks,
-      icon: <Icon name="clipboardList" className="text-secondary" />,
-      color: "bg-secondary/10"
+      icon: <Icon name="categories" className="text-accent" />,
+      color: "bg-accent/10",
     },
     {
       title: "Categories",
       value: stats.categories,
-      icon: <Icon name="chart" className="text-info" />,
-      color: "bg-info/10"
+      icon: <Icon name="categories" className="text-info" />,
+      color: "bg-info/10",
     },
     {
       title: "Banners",
       value: stats.totalBanners,
-      icon: <Icon name="chart" className="text-warning" />,
-      color: "bg-warning/10"
-    }
+      icon: <Icon name="bookOpen" className="text-success" />,
+      color: "bg-success/10",
+    },
   ];
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-base-content">Dashboard</h1>
-          <p className="text-base-content/70">Welcome to the BookBug Admin Dashboard</p>
-        </div>
-        
+    <div className="space-y-8">
+      {/* Welcome Section */}
+      <div className="bg-base-100 rounded-xl border border-base-300 p-6 shadow-sm">
+        <h1 className="text-3xl font-bold text-base-content">Admin Dashboard</h1>
+        <p className="text-base-content/70 mt-2">
+          Welcome back! Here's what's happening with your library today.
+        </p>
       </div>
 
-      {/* Stats Cards */}
+      {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         {statCards.map((card, index) => (
-          <div key={index} className="bg-base-100 rounded-xl border border-base-300 p-6 shadow-sm">
+          <div
+            key={index}
+            className="bg-base-100 rounded-xl border border-base-300 p-6 shadow-sm hover:shadow-md transition-shadow duration-200"
+          >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-base-content/70">{card.title}</p>
-                {loading ? (
-                  <div className="h-8 w-12 bg-base-300 rounded-lg animate-pulse mt-2"></div>
-                ) : (
-                  <p className="text-3xl font-bold mt-2">{card.value}</p>
-                )}
+                <p className="text-base-content/70 text-sm">{card.title}</p>
+                <h3 className="text-2xl font-bold text-base-content mt-1">
+                  {card.value}
+                </h3>
               </div>
-              <div className={`p-3 rounded-lg ${card.color}`}>
+              <div
+                className={`p-3 rounded-lg ${card.color} flex items-center justify-center`}
+              >
                 {card.icon}
               </div>
             </div>
@@ -107,61 +113,66 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-base-100 rounded-xl border border-base-300 p-6 shadow-sm">
-          <h2 className="text-xl font-semibold mb-4">Recent Books</h2>
-          <div className="space-y-4">
-            {loading ? (
-              [1, 2, 3].map((item) => (
-                <div key={item} className="flex items-center gap-4 p-3">
-                  <div className="bg-base-300 border-2 border-dashed rounded-xl w-16 h-16 animate-pulse" />
-                  <div className="flex-1 space-y-2">
-                    <div className="h-4 bg-base-300 rounded animate-pulse"></div>
-                    <div className="h-3 bg-base-300 rounded w-3/4 animate-pulse"></div>
-                  </div>
-                </div>
-              ))
-            ) : recentBooks.length > 0 ? (
-              recentBooks.map((book) => (
-                <div key={book._id} className="flex items-center gap-4 p-3 hover:bg-base-200 rounded-lg transition-colors">
-                  <div className="bg-base-300 border-2 border-dashed rounded-xl w-16 h-16">
-                    {book.image && (
-                      <img src={book.image} alt={book.title} className="w-full h-full object-cover rounded-xl" />
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="font-medium">{book.title}</h3>
-                    <p className="text-sm text-base-content/70">{book.author || "Unknown Author"}</p>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-base-content/70 text-center py-4">No books found</p>
-            )}
-          </div>
+      {/* Recent Books Section */}
+      <div className="bg-base-100 rounded-xl border border-base-300 p-6 shadow-sm">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-base-content">Recent Books</h2>
+          <Link to="/admin/books">
+            <Button variant="outline">View All Books</Button>
+          </Link>
         </div>
 
-        <div className="bg-base-100 rounded-xl border border-base-300 p-6 shadow-sm">
-          <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <Button variant="primary" fullWidth onClick={() => navigate("/admin/books/new")}>
-              <Icon name="plus" className="mr-2" />
-              Add Book
-            </Button>
-            <Button variant="outline" fullWidth onClick={() => navigate("/admin/users")}>
-              <Icon name="users" className="mr-2" />
-              View Users
-            </Button>
-            <Button variant="outline" fullWidth onClick={() => navigate("/admin/categories")}>
-              <Icon name="categories" className="mr-2" />
-              Manage Categories
-            </Button>
-            <Button variant="outline" fullWidth onClick={() => navigate("/admin/banner")}>
-              <Icon name="chart" className="mr-2" />
-              Update Banner
-            </Button>
-          </div>
+        <div className="overflow-x-auto">
+          <table className="table table-zebra">
+            <thead className="bg-base-200">
+              <tr>
+                <th>Book</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Stock</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentBooks.length === 0 ? (
+                <tr>
+                  <td colSpan="4" className="text-center py-4">
+                    No books found
+                  </td>
+                </tr>
+              ) : (
+                recentBooks.map((book) => {
+                  // Add null/undefined checks for all book properties
+                  const title = book?.title || book?.name || "Untitled Book";
+                  const author = book?.author || "Unknown Author";
+                  const category = book?.category || "Uncategorized";
+                  const quantity = book?.quantity !== undefined ? book.quantity : 0;
+                  
+                  return (
+                    <tr key={book._id}>
+                      <td>
+                        <div className="font-medium">{title}</div>
+                      </td>
+                      <td>{author}</td>
+                      <td>
+                        <span className="badge badge-primary badge-sm">
+                          {category}
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          className={`badge badge-sm ${
+                            quantity > 0 ? "badge-accent" : "badge-primary opacity-50"
+                          }`}
+                        >
+                          {quantity > 0 ? `${quantity} available` : "Out of stock"}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

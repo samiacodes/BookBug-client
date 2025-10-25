@@ -4,6 +4,9 @@ import Title from "./Title";
 import Icon from "./Icon";
 
 const CategoryCard = ({ category }) => {
+  // Handle both string and object formats
+  const categoryName = typeof category === 'string' ? category : category?.name || 'Unknown';
+  
   return (
     <motion.div
       whileHover={{ scale: 1.05, y: -5 }}
@@ -11,11 +14,11 @@ const CategoryCard = ({ category }) => {
     >
       <div className="p-6">
         <div className="w-16 h-16 mx-auto mb-4 bg-primary rounded-full flex items-center justify-center shadow-lg">
-          <span className="text-2xl font-bold text-primary-content">{category.charAt(0)}</span>
+          <span className="text-2xl font-bold text-primary-content">{categoryName.charAt(0)}</span>
         </div>
-        <Title text={category} level={3} />
+        <Title text={categoryName} level={3} />
 
-        <Link to={`/category/${category}`} className="mt-4 block">
+        <Link to={`/category/${categoryName}`} className="mt-4 block">
           <button className="btn btn-primary btn-sm rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2 mx-auto group">
             View Books
             <Icon name="arrowRight" className="group-hover:translate-x-1 transition-transform duration-200" />
