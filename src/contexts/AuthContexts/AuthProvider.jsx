@@ -85,23 +85,19 @@ const AuthProvider = ({ children }) => {
 
   // Recruiter quick login
   const recruiterLogin = async () => {
-    if (import.meta.env.DEV) {
-      try {
-        const email = import.meta.env.VITE_ADMIN_EMAIL;
-        const password = import.meta.env.VITE_ADMIN_PASSWORD;
-        if (email && password) {
-          const userCredential = await signInWithEmailAndPassword(auth, email, password);
-          setRole("admin");
-          return userCredential;
-        } else {
-          throw new Error("Admin credentials not configured");
-        }
-      } catch (error) {
-        console.error("Error with recruiter login:", error);
-        throw error;
+    try {
+      const email = import.meta.env.VITE_ADMIN_EMAIL;
+      const password = import.meta.env.VITE_ADMIN_PASSWORD;
+      if (email && password) {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        setRole("admin");
+        return userCredential;
+      } else {
+        throw new Error("Admin credentials not configured");
       }
-    } else {
-      throw new Error("Recruiter login only available in development");
+    } catch (error) {
+      console.error("Error with recruiter login:", error);
+      throw error;
     }
   };
 

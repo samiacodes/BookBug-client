@@ -18,11 +18,7 @@ const RecruiterLoginButton = () => {
     }
   };
 
-  // Only show in development environment
-  if (!import.meta.env.DEV) {
-    return null;
-  }
-
+  // Show the button on all environments (removed the development-only restriction)
   return (
     <div className="form-control mt-4">
       <Button
