@@ -6,8 +6,10 @@ import Spinner from "../shared/Spinner";
 import Title from "../../components/Title";
 import Button from "../../components/Button";
 import CloudinaryUpload from "../../components/CloudinaryUpload";
+import useApi from "../../hooks/useApi";
 
 const UpdateBook = () => {
+  const { get, put } = useApi();
   const { id } = useParams();
   const navigate = useNavigate();
   const [book, setBook] = useState(null);
@@ -52,10 +54,7 @@ const UpdateBook = () => {
     }
 
     try {
-      await axios.put(
-        `https://book-bug-server.onrender.com/books/${id}`,
-        book
-      );
+      await put(`/books/${id}`, book);
       toast.success("Book updated successfully!");
       navigate("/all-books");
     } catch (error) {

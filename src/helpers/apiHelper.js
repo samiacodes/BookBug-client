@@ -1,6 +1,8 @@
 import axios from "axios";
 
 /**
+ * DEPRECATED: Use the useApi hook instead
+ * 
  * Create an axios instance with default configuration
  * @param {Object} user - Firebase user object
  * @returns {Promise<Object>} - Configured axios instance
@@ -21,6 +23,8 @@ export const createAuthorizedAxiosInstance = async (user) => {
 };
 
 /**
+ * DEPRECATED: Use the useApi hook instead
+ * 
  * Make an authorized API request
  * @param {Object} user - Firebase user object
  * @param {string} method - HTTP method (get, post, put, delete)

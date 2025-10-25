@@ -3,8 +3,10 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Button from "../../components/Button";
 import CloudinaryUpload from "../../components/CloudinaryUpload";
+import useApi from "../../hooks/useApi";
 
 const BookForm = ({ book, onClose }) => {
+  const { post, put } = useApi();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -54,11 +56,11 @@ const BookForm = ({ book, onClose }) => {
     try {
       if (book) {
         // Update existing book
-        await axios.put(`https://book-bug-server.onrender.com/books/${book._id}`, formData);
+        await put(`/books/${book._id}`, formData);
         toast.success("Book updated successfully!");
       } else {
         // Create new book
-        await axios.post("https://book-bug-server.onrender.com/books", formData);
+        await post(`/books`, formData);
         toast.success("Book added successfully!");
       }
       onClose();

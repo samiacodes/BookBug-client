@@ -1,28 +1,50 @@
-import React, { useState } from "react";
-import Icon from "../../components/Icon";
-import Button from "../../components/Button";
+import React, { useState, useEffect } from "react";
+import useApi from "../../hooks/useApi";
 
 const UsersManagement = () => {
-  const [users, setUsers] = useState([
-    { id: 1, name: "John Doe", email: "john@example.com", role: "user", status: "active", joinDate: "2023-01-15" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", role: "user", status: "active", joinDate: "2023-02-20" },
-    { id: 3, name: "Admin User", email: "admin@example.com", role: "admin", status: "active", joinDate: "2023-01-01" },
-    { id: 4, name: "Robert Brown", email: "robert@example.com", role: "user", status: "suspended", joinDate: "2023-03-10" },
-  ]);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { get } = useApi();
 
-  const handleSuspendUser = (id) => {
-    setUsers(users.map(user => 
-      user.id === id 
-        ? { ...user, status: user.status === "active" ? "suspended" : "active" }
-        : user
-    ));
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setLoading(true);
+        const userData = await get("/users");
+        setUsers(userData);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching users:", err);
+        setError("Failed to fetch users. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, [get]);
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    return new Date(dateString).toLocaleDateString();
   };
 
-  const handleDeleteUser = (id) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      setUsers(users.filter(user => user.id !== id));
-    }
-  };
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="loading loading-spinner loading-lg text-primary"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-error text-error-content p-4 rounded-lg">
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -40,21 +62,27 @@ const UsersManagement = () => {
               <th>Role</th>
               <th>Status</th>
               <th>Join Date</th>
-              <th>Actions</th>
+              <th>Last Login</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user) => (
-              <tr key={user.id}>
+              <tr key={user.uid}>
                 <td>
                   <div className="flex items-center gap-3">
                     <div className="avatar">
                       <div className="mask mask-squircle w-10 h-10">
-                        <img src="/default-avatar.png" alt={user.name} />
+                        <img 
+                          src={user.photoURL || "/default-avatar.png"} 
+                          alt={user.displayName || user.email} 
+                          onError={(e) => {
+                            e.target.src = "/default-avatar.png";
+                          }}
+                        />
                       </div>
                     </div>
                     <div>
-                      <div className="font-medium">{user.name}</div>
+                      <div className="font-medium">{user.displayName || "No name"}</div>
                     </div>
                   </div>
                 </td>
@@ -65,41 +93,22 @@ const UsersManagement = () => {
                   </span>
                 </td>
                 <td>
-                  <span className={`badge ${user.status === "active" ? "badge-success" : "badge-warning"}`}>
-                    {user.status}
+                  <span className={`badge ${user.disabled ? "badge-warning" : "badge-success"}`}>
+                    {user.disabled ? "Disabled" : "Active"}
                   </span>
                 </td>
-                <td>{user.joinDate}</td>
-                <td>
-                  <div className="flex gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => handleSuspendUser(user.id)}
-                    >
-                      {user.status === "active" ? (
-                        <>
-                          <Icon name="ban" className="mr-1" size="sm" /> Suspend
-                        </>
-                      ) : (
-                        <>Activate</>
-                      )}
-                    </Button>
-                    {user.role !== "admin" && (
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        onClick={() => handleDeleteUser(user.id)}
-                      >
-                        <Icon name="trash" size="sm" />
-                      </Button>
-                    )}
-                  </div>
-                </td>
+                <td>{formatDate(user.createdAt)}</td>
+                <td>{formatDate(user.lastSignInAt)}</td>
               </tr>
             ))}
           </tbody>
         </table>
+        
+        {users.length === 0 && (
+          <div className="text-center py-8">
+            <p className="text-base-content/70">No users found</p>
+          </div>
+        )}
       </div>
     </div>
   );

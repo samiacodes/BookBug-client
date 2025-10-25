@@ -7,8 +7,10 @@ import bookAnimation from "../../assets/lotties/addBook.json";
 import Title from "../../components/Title";
 import Button from "../../components/Button";
 import CloudinaryUpload from "../../components/CloudinaryUpload";
+import useApi from "../../hooks/useApi";
 
 const AddBook = () => {
+  const { post } = useApi();
   const [book, setBook] = useState({
     title: "",
     author: "",
@@ -100,7 +102,7 @@ const AddBook = () => {
         return;
       }
       
-      await axios.post(`${baseURL}/books`, {
+      await post(`/books`, {
         ...book,
         available: book.quantity > 0
       });
@@ -132,7 +134,7 @@ const AddBook = () => {
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Title */}
+          {/* Title */ }
           <div className="form-control">
             <label className="label">
               <span className="label-text font-medium">Book Title *</span>

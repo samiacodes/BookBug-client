@@ -2,9 +2,11 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
 import Button from "./Button";
+import useApi from "../hooks/useApi";
 
 const BorrowModal = ({ book, onClose, onBorrowSuccess }) => {
   const { user } = useAuth();
+  const { get, post } = useApi();
   const [returnDate, setReturnDate] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -19,16 +21,7 @@ const BorrowModal = ({ book, onClose, onBorrowSuccess }) => {
 
     try {
       // Step 1: Check if the user has already borrowed this book
-      const idToken = await user.getIdToken();
-
-      const borrowedCheckRes = await axios.get(
-        `https://book-bug-server.onrender.com/borrowed?email=${user.email}`,
-        {
-          headers: {
-            Authorization: `Bearer ${idToken}`,
-          },
-        }
-      );
+      const borrowedCheckRes = await get(`/borrowed?email=${user.email}`);
 
       const alreadyBorrowed = borrowedCheckRes.data.find(
         (borrowedBook) => borrowedBook.bookId._id === book._id
@@ -41,21 +34,13 @@ const BorrowModal = ({ book, onClose, onBorrowSuccess }) => {
       }
 
       // Step 2: Add to Borrowed list and decrease book quantity
-      const res = await axios.post(
-        `https://book-bug-server.onrender.com/borrow`,
-        {
-          userName: user.displayName,
-          userEmail: user.email,
-          returnDate,
-          bookId: book._id,
-          bookName: book.name,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${idToken}`,
-          },
-        }
-      );
+      const res = await post(`/borrow`, {
+        userName: user.displayName,
+        userEmail: user.email,
+        returnDate,
+        bookId: book._id,
+        bookName: book.name,
+      });
 
       setMessage(res.data.message || "Book borrowed successfully!");
 

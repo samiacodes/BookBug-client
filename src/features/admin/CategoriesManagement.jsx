@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Icon from "../../components/Icon";
 import Button from "../../components/Button";
+import useApi from "../../hooks/useApi";
 
 const CategoriesManagement = () => {
+  const { post, put, delete: del } = useApi();
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState("");
   const [newCategoryDescription, setNewCategoryDescription] = useState("");
@@ -38,13 +40,13 @@ const CategoriesManagement = () => {
     if (!newCategory.trim()) return;
     
     try {
-      const response = await axios.post(`${baseURL}/categories`, {
+      const response = await post(`/categories`, {
         name: newCategory,
         description: newCategoryDescription
       });
       
       // Add the new category to the list
-      setCategories([...categories, response.data.category]);
+      setCategories([...categories, response.category]);
       setNewCategory("");
       setNewCategoryDescription("");
       setError("");
@@ -57,7 +59,7 @@ const CategoriesManagement = () => {
   const handleDeleteCategory = async (id) => {
     if (window.confirm("Are you sure you want to delete this category?")) {
       try {
-        await axios.delete(`${baseURL}/categories/${id}`);
+        await del(`/categories/${id}`);
         setCategories(categories.filter(cat => cat._id !== id));
         setError("");
       } catch (err) {
@@ -75,14 +77,14 @@ const CategoriesManagement = () => {
 
   const saveEdit = async () => {
     try {
-      const response = await axios.put(`${baseURL}/categories/${editingId}`, {
+      const response = await put(`/categories/${editingId}`, {
         name: editName,
         description: editDescription
       });
       
       // Update the category in the list
       setCategories(categories.map(cat => 
-        cat._id === editingId ? response.data.category : cat
+        cat._id === editingId ? response.category : cat
       ));
       
       setEditingId(null);
@@ -125,7 +127,7 @@ const CategoriesManagement = () => {
         </div>
       )}
 
-      {/* Add Category Form */};
+      {/* Add Category Form */}
       <div className="bg-base-100 rounded-xl border border-base-300 p-6 shadow-sm">
         <h2 className="text-xl font-semibold mb-4">Add New Category</h2>
         <div className="space-y-4">

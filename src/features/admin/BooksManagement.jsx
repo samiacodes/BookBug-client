@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Icon from "../../components/Icon";
 import Button from "../../components/Button";
 import BookForm from "./BookForm";
-import { AuthContext } from "../../contexts/AuthContexts/AuthContext";
-import { makeAuthorizedRequest } from "../../helpers/apiHelper";
+import useApi from "../../hooks/useApi";
 
 const BooksManagement = () => {
-  const { user } = useContext(AuthContext);
+  const { del } = useApi();
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -31,7 +30,7 @@ const BooksManagement = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this book?")) {
       try {
-        await makeAuthorizedRequest(user, 'delete', `/books/${id}`);
+        await del(`/books/${id}`);
         fetchBooks(); // Refresh the list
       } catch (error) {
         console.error("Error deleting book:", error);

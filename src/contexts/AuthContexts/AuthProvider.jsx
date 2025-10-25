@@ -85,9 +85,10 @@ const AuthProvider = ({ children }) => {
 
   // Recruiter quick login
   const recruiterLogin = async () => {
+    // Removed the development-only restriction and using hardcoded credentials for testing
     try {
-      const email = import.meta.env.VITE_ADMIN_EMAIL;
-      const password = import.meta.env.VITE_ADMIN_PASSWORD;
+      const email = "admin@bookbug.com";
+      const password = "Admin123!";
       if (email && password) {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         setRole("admin");

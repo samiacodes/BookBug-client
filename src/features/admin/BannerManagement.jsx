@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Icon from "../../components/Icon";
 import { toast } from "react-toastify";
 import Button from "../../components/Button";
 import BannerForm from "./BannerForm";
-import { AuthContext } from "../../contexts/AuthContexts/AuthContext";
-import { makeAuthorizedRequest } from "../../helpers/apiHelper";
+import useApi from "../../hooks/useApi";
 
 const BannerManagement = () => {
-  const { user } = useContext(AuthContext);
+  const { get, post, put, delete: del } = useApi();
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -38,7 +37,7 @@ const BannerManagement = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this banner?")) {
       try {
-        await makeAuthorizedRequest(user, 'delete', `/banners/${id}`);
+        await del(`/banners/${id}`);
         setBanners(banners.filter(banner => banner._id !== id));
         toast.success("Banner deleted successfully!");
       } catch (error) {
@@ -52,14 +51,14 @@ const BannerManagement = () => {
     try {
       if (editingBanner) {
         // Update existing banner
-        const response = await makeAuthorizedRequest(user, 'put', `/banners/${editingBanner._id}`, bannerData);
+        const response = await put(`/banners/${editingBanner._id}`, bannerData);
         setBanners(banners.map(banner => 
           banner._id === editingBanner._id ? response.banner : banner
         ));
         toast.success("Banner updated successfully!");
       } else {
         // Add new banner
-        const response = await makeAuthorizedRequest(user, 'post', `/banners`, bannerData);
+        const response = await post(`/banners`, bannerData);
         setBanners([...banners, response.banner]);
         toast.success("Banner added successfully!");
       }
@@ -75,7 +74,7 @@ const BannerManagement = () => {
 
   const handleSetActive = async (id) => {
     try {
-      const response = await makeAuthorizedRequest(user, 'put', `/banners/${id}/active`);
+      const response = await put(`/banners/${id}/active`);
       
       // Update the banners list to reflect the active status
       setBanners(banners.map(banner => ({

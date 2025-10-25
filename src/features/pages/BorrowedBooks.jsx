@@ -3,25 +3,22 @@ import axios from "axios";
 import { useAuth } from "../../hooks/useAuth";
 import Title from "../../components/Title";
 import Button from "../../components/Button";
+import useApi from "../../hooks/useApi";
 
 const BorrowedBooks = () => {
   const { user } = useAuth();
+  const { get, delete: del } = useApi();
   const [borrowedBooks, setBorrowedBooks] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(
-        `https://book-bug-server.onrender.com/borrowed?email=${user.email}`
-      )
+    get(`/borrowed?email=${user.email}`)
       .then((res) => {
         setBorrowedBooks(res.data);
       });
-  }, [user]);
+  }, [user, get]);
 
   const handleReturn = async (id) => {
-    await axios.delete(
-      `https://book-bug-server.onrender.com/borrowed/${id}`
-    );
+    await del(`/borrowed/${id}`);
     setBorrowedBooks((prev) => prev.filter((book) => book._id !== id));
   };
 

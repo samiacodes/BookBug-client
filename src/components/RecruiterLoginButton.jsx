@@ -5,20 +5,31 @@ import { AuthContext } from "../contexts/AuthContexts/AuthContext";
 import Button from "./Button";
 
 const RecruiterLoginButton = () => {
-  const { recruiterLogin } = useContext(AuthContext);
+  const { signInUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleRecruiterLogin = async () => {
     try {
-      await recruiterLogin();
-      toast.success("Recruiter login successful!");
-      navigate("/admin");
+      // Hardcoded admin credentials for testing
+      const email = "admin@bookbug.com";
+      const password = "Admin123!";
+      
+      // Use the existing signInUser function with hardcoded credentials
+      const userCredential = await signInUser(email, password);
+      
+      // Check if the logged in user is admin
+      if (userCredential.user.email === email) {
+        toast.success("Admin login successful!");
+        navigate("/admin");
+      } else {
+        toast.success("Login successful!");
+        navigate("/");
+      }
     } catch (err) {
-      toast.error(err.message || "Recruiter login failed");
+      toast.error(err.message || "Admin login failed");
     }
   };
 
-  // Show the button on all environments (removed the development-only restriction)
   return (
     <div className="form-control mt-4">
       <Button
