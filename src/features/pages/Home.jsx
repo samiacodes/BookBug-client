@@ -6,7 +6,6 @@ import Title from "../../components/Title";
 import BookCard from "../../components/BookCard";
 import CategoryCard from "../../components/CategoryCard";
 import SmartSearch from "../../components/SmartSearch";
-import ReviewList from "../../components/ReviewList";
 
 const Home = () => {
   const [books, setBooks] = useState([]);
@@ -93,11 +92,6 @@ const Home = () => {
             View All Categories
           </Link>
         </div>
-      </section>
-
-      {/* Community Reviews Section */}
-      <section className="max-w-7xl mx-auto px-4">
-        <ReviewList />
       </section>
 
       {/* Smart Search Section */}

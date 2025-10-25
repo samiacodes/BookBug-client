@@ -15,6 +15,7 @@ const Navbar = () => {
   const navLinks = [
     { path: "/", label: "Home", icon: "home" },
     { path: "/all-books", label: "All Books", icon: "books" },
+    { path: "/addbooks", label: "Categories", icon: "categories" },
   ];
 
   return (
@@ -44,12 +45,7 @@ const Navbar = () => {
           </ul>
         </div>
         <Link to="/" className="btn btn-ghost text-xl">
-          <div className="flex items-center gap-3">
-            <Icon name="bookOpen" className="text-primary text-3xl" />
-            <span className="text-2xl font-bold font-playfair text-primary">
-              BookBug
-            </span>
-          </div>
+          BookBug
         </Link>
       </div>
 
