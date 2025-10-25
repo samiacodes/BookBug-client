@@ -22,7 +22,7 @@ const BorrowModal = ({ book, onClose, onBorrowSuccess }) => {
       const idToken = await user.getIdToken();
 
       const borrowedCheckRes = await axios.get(
-        `https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/borrowed?email=${user.email}`,
+        `https://book-bug-server.onrender.com/borrowed?email=${user.email}`,
         {
           headers: {
             Authorization: `Bearer ${idToken}`,
@@ -42,7 +42,7 @@ const BorrowModal = ({ book, onClose, onBorrowSuccess }) => {
 
       // Step 2: Add to Borrowed list and decrease book quantity
       const res = await axios.post(
-        `https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/borrow`,
+        `https://book-bug-server.onrender.com/borrow`,
         {
           userName: user.displayName,
           userEmail: user.email,

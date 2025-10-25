@@ -15,7 +15,7 @@ const UpdateBook = () => {
 
   useEffect(() => {
     axios
-      .get(`https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books/${id}`)
+      .get(`https://book-bug-server.onrender.com/books/${id}`)
       .then((res) => {
         setBook(res.data);
         console.log("Loaded book:", res.data); 
@@ -53,7 +53,7 @@ const UpdateBook = () => {
 
     try {
       await axios.put(
-        `https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books/${id}`,
+        `https://book-bug-server.onrender.com/books/${id}`,
         book
       );
       toast.success("Book updated successfully!");

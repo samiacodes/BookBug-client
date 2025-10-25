@@ -15,7 +15,7 @@ const ReviewList = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingReview, setEditingReview] = useState(null);
 
-  const API_URL = import.meta.env.VITE_API_URL || "https://b11a11-server-side2-mdp-arvezsarkar.vercel.app";
+  const API_URL = import.meta.env.VITE_API_URL || "https://book-bug-server.onrender.com";
 
   // Fetch reviews
   const fetchReviews = async () => {

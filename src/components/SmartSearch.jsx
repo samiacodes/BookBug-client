@@ -73,7 +73,7 @@ const SmartSearch = ({ isMobile = false }) => {
   const findExactBook = async (query) => {
     try {
       const response = await axios.get(
-        `https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books?search=${encodeURIComponent(query)}`
+        `https://book-bug-server.onrender.com/books?search=${encodeURIComponent(query)}`
       );
       
       const books = response.data;

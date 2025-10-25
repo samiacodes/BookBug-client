@@ -11,7 +11,7 @@ export const createAuthorizedAxiosInstance = async (user) => {
   
   // Create axios instance with authorization header
   const instance = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'https://b11a11-server-side2-mdp-arvezsarkar.vercel.app',
+    baseURL: import.meta.env.VITE_API_URL || 'https://book-bug-server.onrender.com',
     headers: {
       'Authorization': `Bearer ${idToken}`
     }
@@ -36,7 +36,7 @@ export const makeAuthorizedRequest = async (user, method, url, data = null) => {
     // Make request with authorization header
     const config = {
       method,
-      url: `${import.meta.env.VITE_API_URL || 'https://b11a11-server-side2-mdp-arvezsarkar.vercel.app'}${url}`,
+      url: `${import.meta.env.VITE_API_URL || 'https://book-bug-server.onrender.com'}${url}`,
       headers: {
         'Authorization': `Bearer ${idToken}`
       }

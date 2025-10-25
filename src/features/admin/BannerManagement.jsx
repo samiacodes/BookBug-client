@@ -20,7 +20,7 @@ const BannerManagement = () => {
 
   const fetchBanners = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'https://b11a11-server-side2-mdp-arvezsarkar.vercel.app'}/banners`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'https://book-bug-server.onrender.com'}/banners`);
       setBanners(response.data);
     } catch (error) {
       console.error("Error fetching banners:", error);

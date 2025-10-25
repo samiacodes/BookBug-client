@@ -13,7 +13,7 @@ const Banner = () => {
   useEffect(() => {
     const fetchActiveBanner = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL || 'https://b11a11-server-side2-mdp-arvezsarkar.vercel.app'}/banners/active`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL || 'https://book-bug-server.onrender.com'}/banners/active`);
         setActiveBanner(response.data);
       } catch (error) {
         console.error("Error fetching active banner:", error);

@@ -19,7 +19,7 @@ const BooksManagement = () => {
 
   const fetchBooks = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'https://b11a11-server-side2-mdp-arvezsarkar.vercel.app'}/books`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'https://book-bug-server.onrender.com'}/books`);
       setBooks(response.data);
     } catch (error) {
       console.error("Error fetching books:", error);

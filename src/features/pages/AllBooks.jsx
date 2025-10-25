@@ -12,14 +12,14 @@ const AllBooks = () => {
   const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search");
+  const baseURL = import.meta.env.VITE_API_URL || 'https://book-bug-server.onrender.com';
 
   useEffect(() => {
     const fetchBooks = async () => {
       setLoading(true); 
 
       try {
-        let url =
-          "https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books";
+        let url = `${baseURL}/books`;
         
         // Add search query if present
         if (searchQuery) {
@@ -38,7 +38,7 @@ const AllBooks = () => {
     };
 
     fetchBooks();
-  }, [showAvailable, searchQuery]);
+  }, [showAvailable, searchQuery, baseURL]);
 
   return (
     <div className="my-6 px-4">
@@ -108,29 +108,37 @@ const AllBooks = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {books.map((book) => (
-                      <tr key={book._id} className="hover">
-                        <td className="font-medium">{book.name}</td>
-                        <td>{book.author}</td>
-                        <td>
-                          <span className="badge badge-primary badge-sm">{book.category}</span>
-                        </td>
-                        <td>
-                          <span className={`badge badge-sm ${
-                            book.quantity > 0 ? 'badge-accent' : 'badge-primary opacity-50'
-                          }`}>
-                            {book.quantity > 0 ? `${book.quantity} available` : 'Out of stock'}
-                          </span>
-                        </td>
-                        <td>
-                          <Link to={`/update-book/${book._id}`}>
-                            <Button variant="ghost" size="sm">
-                              Update
-                            </Button>
-                          </Link>
-                        </td>
-                      </tr>
-                    ))}
+                    {books.map((book) => {
+                      // Add null/undefined checks for all book properties
+                      const title = book?.title || book?.name || "Untitled Book";
+                      const author = book?.author || "Unknown Author";
+                      const category = book?.category || "Uncategorized";
+                      const quantity = book?.quantity !== undefined ? book.quantity : 0;
+                      
+                      return (
+                        <tr key={book._id} className="hover">
+                          <td className="font-medium">{title}</td>
+                          <td>{author}</td>
+                          <td>
+                            <span className="badge badge-primary badge-sm">{category}</span>
+                          </td>
+                          <td>
+                            <span className={`badge badge-sm ${
+                              quantity > 0 ? 'badge-accent' : 'badge-primary opacity-50'
+                            }`}>
+                              {quantity > 0 ? `${quantity} available` : 'Out of stock'}
+                            </span>
+                          </td>
+                          <td>
+                            <Link to={`/update-book/${book._id}`}>
+                              <Button variant="ghost" size="sm">
+                                Update
+                              </Button>
+                            </Link>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

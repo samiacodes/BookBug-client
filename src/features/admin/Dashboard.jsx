@@ -19,26 +19,20 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        // Fetch books
-        const booksRes = await axios.get(`${import.meta.env.VITE_API_URL || 'https://b11a11-server-side2-mdp-arvezsarkar.vercel.app'}/books`);
-        const books = booksRes.data;
+        // Use the same base URL for all requests
+        const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
         
-        // Fetch banners
-        const bannersRes = await axios.get(`${import.meta.env.VITE_API_URL || 'https://b11a11-server-side2-mdp-arvezsarkar.vercel.app'}/banners`);
-        const banners = bannersRes.data;
+        console.log('Fetching dashboard data from:', `${baseURL}/dashboard/stats`);
         
-        // For now, we'll simulate user and borrowed book counts
-        // In a real implementation, you would have endpoints for these
-        setStats({
-          totalBooks: books.length,
-          totalUsers: 120, // Simulated
-          borrowedBooks: 45, // Simulated
-          categories: [...new Set(books.map(book => book.category).filter(Boolean))].length,
-          totalBanners: banners.length
-        });
+        // Fetch dashboard statistics
+        const statsRes = await axios.get(`${baseURL}/dashboard/stats`);
+        console.log('Stats response:', statsRes.data);
+        setStats(statsRes.data);
         
-        // Get recent books (first 3)
-        setRecentBooks(books.slice(0, 3));
+        // Fetch recent books
+        const recentBooksRes = await axios.get(`${baseURL}/dashboard/recent-books?limit=3`);
+        console.log('Recent books response:', recentBooksRes.data);
+        setRecentBooks(recentBooksRes.data);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       } finally {

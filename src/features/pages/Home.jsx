@@ -9,14 +9,38 @@ import Title from "../../components/Title";
 
 const Home = () => {
   const [books, setBooks] = useState([]);
-  const categories = ["Sci-Fi", "Thriller", "History", "Drama"];
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
   useEffect(() => {
+    // Fetch books
     axios
-      .get("https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books")
+      .get(`${baseURL}/books`)
       .then((res) => setBooks(res.data))
       .catch((err) => console.error("Book loading error:", err));
+    
+    // Fetch categories
+    axios
+      .get(`${baseURL}/categories`)
+      .then((res) => {
+        setCategories(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Category loading error:", err);
+        setLoading(false);
+      });
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="loading loading-spinner loading-lg text-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-16">
@@ -28,11 +52,17 @@ const Home = () => {
           <Title text="Book Categories" level={2} />
           <p className="text-base-content/60 mt-2">Explore our diverse collection</p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {categories.map((cat, i) => (
-            <CategoryCard key={i} category={cat} />
-          ))}
-        </div>
+        {categories.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {categories.map((category) => (
+              <CategoryCard key={category._id} category={category.name} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-base-content/60">No categories available yet.</p>
+          </div>
+        )}
       </section>
 
       {/* Book List */}

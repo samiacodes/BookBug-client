@@ -11,7 +11,7 @@ const BorrowedBooks = () => {
   useEffect(() => {
     axios
       .get(
-        `https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/borrowed?email=${user.email}`
+        `https://book-bug-server.onrender.com/borrowed?email=${user.email}`
       )
       .then((res) => {
         setBorrowedBooks(res.data);
@@ -20,7 +20,7 @@ const BorrowedBooks = () => {
 
   const handleReturn = async (id) => {
     await axios.delete(
-      `https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/borrowed/${id}`
+      `https://book-bug-server.onrender.com/borrowed/${id}`
     );
     setBorrowedBooks((prev) => prev.filter((book) => book._id !== id));
   };

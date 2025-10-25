@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -6,43 +6,112 @@ import Lottie from "lottie-react";
 import bookAnimation from "../../assets/lotties/addBook.json";
 import Title from "../../components/Title";
 import Button from "../../components/Button";
+import CloudinaryUpload from "../../components/CloudinaryUpload";
 
 const AddBook = () => {
   const [book, setBook] = useState({
-    image: "",
-    name: "",
-    quantity: 1,
+    title: "",
     author: "",
     category: "",
     description: "",
-    rating: 1,
+    image: "",
+    quantity: 1,
   });
-
+  
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [imageOption, setImageOption] = useState("url"); // 'url' or 'upload'
+  const [imagePreview, setImagePreview] = useState("");
+  const [uploading, setUploading] = useState(false);
+  
   const navigate = useNavigate();
+  const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+  // Fetch categories when component mounts
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(`${baseURL}/categories`);
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        toast.error("Failed to load categories");
+      }
+    };
+
+    fetchCategories();
+  }, [baseURL]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
+    
     setBook((prev) => ({
       ...prev,
-      [name]:
-        name === "quantity" || name === "rating" ? parseInt(value) : value,
+      [name]: name === "quantity" ? parseInt(value) : value,
     }));
+    
+    // Handle image URL preview
+    if (name === "image" && imageOption === "url") {
+      setImagePreview(value);
+    }
+  };
+
+  const handleImageOptionChange = (option) => {
+    setImageOption(option);
+    // Clear image field when switching options
+    setBook(prev => ({ ...prev, image: "" }));
+    setImagePreview("");
+  };
+
+  const handleUploadSuccess = (url) => {
+    setBook(prev => ({ ...prev, image: url }));
+    setUploading(false);
+  };
+
+  const handleUploadError = (error) => {
+    console.error("Upload error:", error);
+    setUploading(false);
+  };
+
+  const handleUploading = (isUploading) => {
+    setUploading(isUploading);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Basic validation
+    if (!book.title || !book.author || !book.category || !book.description || !book.image) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+    
+    if (book.quantity < 1) {
+      toast.error("Quantity must be at least 1");
+      return;
+    }
 
+    setLoading(true);
+    
     try {
-      await axios.post(
-        "https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books",
-        book
-      );
+      // If we're uploading a file, make sure it's done
+      if (imageOption === "upload" && uploading) {
+        toast.error("Please wait for image upload to complete");
+        return;
+      }
+      
+      await axios.post(`${baseURL}/books`, {
+        ...book,
+        available: book.quantity > 0
+      });
+      
       toast.success("Book added successfully!");
       navigate("/all-books");
     } catch (error) {
       console.error(error);
-      toast.error("Failed to add book.");
+      toast.error(error.response?.data?.message || "Failed to add book");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -63,72 +132,26 @@ const AddBook = () => {
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Title */}
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-medium">Image URL</span>
+              <span className="label-text font-medium">Book Title *</span>
             </label>
             <input
               type="text"
-              name="image"
+              name="title"
               required
-              value={book.image}
+              value={book.title}
               onChange={handleChange}
               className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
-              placeholder="https://example.com/cover.jpg"
+              placeholder="Enter book title"
             />
           </div>
 
+          {/* Author */}
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-medium">Book Title</span>
-            </label>
-            <input
-              type="text"
-              name="name"
-              required
-              value={book.name}
-              onChange={handleChange}
-              className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
-              placeholder="Enter book name"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Quantity</span>
-              </label>
-              <input
-                type="number"
-                name="quantity"
-                min="1"
-                required
-                value={book.quantity}
-                onChange={handleChange}
-                className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
-              />
-            </div>
-
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Rating (1–5)</span>
-              </label>
-              <input
-                type="number"
-                name="rating"
-                min="1"
-                max="5"
-                required
-                value={book.rating}
-                onChange={handleChange}
-                className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
-              />
-            </div>
-          </div>
-
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium">Author Name</span>
+              <span className="label-text font-medium">Author Name *</span>
             </label>
             <input
               type="text"
@@ -141,9 +164,10 @@ const AddBook = () => {
             />
           </div>
 
+          {/* Category */}
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-medium">Category</span>
+              <span className="label-text font-medium">Category *</span>
             </label>
             <select
               name="category"
@@ -153,18 +177,18 @@ const AddBook = () => {
               className="select select-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
             >
               <option value="">Select a category</option>
-              <option value="Novel">Novel</option>
-              <option value="Thriller">Thriller</option>
-              <option value="History">History</option>
-              <option value="Drama">Drama</option>
-              <option value="Sci-Fi">Sci-Fi</option>
-              <option value="Dystopian">Dystopian</option>
+              {categories.map((category) => (
+                <option key={category._id} value={category.name}>
+                  {category.name}
+                </option>
+              ))}
             </select>
           </div>
 
+          {/* Description */}
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-medium">Short Description</span>
+              <span className="label-text font-medium">Description *</span>
             </label>
             <textarea
               name="description"
@@ -176,13 +200,97 @@ const AddBook = () => {
             ></textarea>
           </div>
 
+          {/* Quantity */}
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-medium">Quantity *</span>
+            </label>
+            <input
+              type="number"
+              name="quantity"
+              min="1"
+              required
+              value={book.quantity}
+              onChange={handleChange}
+              className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+            />
+          </div>
+
+          {/* Image Option Selection */}
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-medium">Image *</span>
+            </label>
+            
+            <div className="flex gap-4 mb-3">
+              <button
+                type="button"
+                className={`btn ${imageOption === 'url' ? 'btn-primary' : 'btn-outline'}`}
+                onClick={() => handleImageOptionChange('url')}
+              >
+                Image URL
+              </button>
+              <button
+                type="button"
+                className={`btn ${imageOption === 'upload' ? 'btn-primary' : 'btn-outline'}`}
+                onClick={() => handleImageOptionChange('upload')}
+              >
+                Upload Image
+              </button>
+            </div>
+
+            {/* Image URL Input */}
+            {imageOption === "url" && (
+              <input
+                type="url"
+                name="image"
+                required
+                value={book.image}
+                onChange={handleChange}
+                className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                placeholder="https://example.com/cover.jpg"
+              />
+            )}
+
+            {/* Image Upload */}
+            {imageOption === "upload" && (
+              <CloudinaryUpload
+                onUploadSuccess={handleUploadSuccess}
+                onUploadError={handleUploadError}
+                onUploading={handleUploading}
+                className="w-full"
+              />
+            )}
+
+            {/* Image Preview */}
+            {(imagePreview || (imageOption === "upload" && book.image)) && (
+              <div className="mt-3">
+                <p className="text-sm text-base-content/70 mb-2">Image Preview:</p>
+                <img 
+                  src={imagePreview || book.image} 
+                  alt="Preview" 
+                  className="w-32 h-32 object-cover rounded-lg border border-base-300"
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Submit Button */}
           <div className="pt-2">
             <Button
               type="submit"
               variant="primary"
               fullWidth
+              disabled={loading || uploading}
             >
-              Add Book
+              {loading ? (
+                <>
+                  <span className="loading loading-spinner loading-sm mr-2"></span>
+                  Adding Book...
+                </>
+              ) : (
+                "Add Book"
+              )}
             </Button>
           </div>
         </form>

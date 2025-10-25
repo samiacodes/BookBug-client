@@ -10,7 +10,7 @@ const CategoryBooks = () => {
   useEffect(() => {
     axios
       .get(
-        `https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books?category=${categoryName}`
+        `https://book-bug-server.onrender.com/books?category=${categoryName}`
       )
       .then((res) => setBooks(res.data))
       .catch((err) => console.error("Error loading books", err));

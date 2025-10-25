@@ -54,11 +54,11 @@ const BookForm = ({ book, onClose }) => {
     try {
       if (book) {
         // Update existing book
-        await axios.put(`https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books/${book._id}`, formData);
+        await axios.put(`https://book-bug-server.onrender.com/books/${book._id}`, formData);
         toast.success("Book updated successfully!");
       } else {
         // Create new book
-        await axios.post("https://b11a11-server-side2-mdp-arvezsarkar.vercel.app/books", formData);
+        await axios.post("https://book-bug-server.onrender.com/books", formData);
         toast.success("Book added successfully!");
       }
       onClose();
