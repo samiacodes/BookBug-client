@@ -13,7 +13,7 @@ const BorrowedBooks = () => {
   useEffect(() => {
     get(`/borrowed?email=${user.email}`)
       .then((res) => {
-        setBorrowedBooks(res.data);
+        setBorrowedBooks(res);
       });
   }, [user, get]);
 

@@ -23,7 +23,8 @@ const BorrowModal = ({ book, onClose, onBorrowSuccess }) => {
       // Step 1: Check if the user has already borrowed this book
       const borrowedCheckRes = await get(`/borrowed?email=${user.email}`);
 
-      const alreadyBorrowed = borrowedCheckRes.data.find(
+      // The response is already the data array, not an object with a data property
+      const alreadyBorrowed = borrowedCheckRes.find(
         (borrowedBook) => borrowedBook.bookId._id === book._id
       );
 
@@ -42,7 +43,7 @@ const BorrowModal = ({ book, onClose, onBorrowSuccess }) => {
         bookName: book.name,
       });
 
-      setMessage(res.data.message || "Book borrowed successfully!");
+      setMessage(res.message || "Book borrowed successfully!");
 
       if (onBorrowSuccess) {
         onBorrowSuccess();
