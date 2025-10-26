@@ -316,8 +316,8 @@ const SmartSearch = ({ isMobile = false }) => {
   return (
     <div className={`${isMobile ? "w-full" : "flex items-center gap-2"}`}>
       {!isMobile && (
-        <form onSubmit={handleSearch} className="flex items-center gap-2">
-          <div className="relative flex-1 max-w-md">
+        <form onSubmit={handleSearch} className="flex items-center justify-center gap-2">
+          <div className="relative flex-1 max-w-full">
             <input
               ref={inputRef}
               type="text"

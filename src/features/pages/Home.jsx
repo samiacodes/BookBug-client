@@ -6,6 +6,7 @@ import Title from "../../components/Title";
 import BookCard from "../../components/BookCard";
 import CategoryCard from "../../components/CategoryCard";
 import SmartSearch from "../../components/SmartSearch";
+import ReviewList from "../../components/ReviewList";
 
 const Home = () => {
   const [books, setBooks] = useState([]);
@@ -35,6 +36,17 @@ const Home = () => {
 
   return (
     <div className="space-y-16">
+      {/* Smart Search Section */}
+      <section className="max-w-4xl mx-auto items-center px-4 pb-16">
+        <div className="text-center mb-8">
+          <Title text="Find Your Next Read" level={2} />
+          <p className="text-base-content/60 mt-2">
+            Search through our vast collection of books
+          </p>
+        </div>
+          <SmartSearch />
+
+      </section>
       {/* Hero Banner */}
       <Banner />
 
@@ -94,16 +106,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Smart Search Section */}
-      <section className="max-w-4xl mx-auto px-4 pb-16">
-        <div className="text-center mb-8">
-          <Title text="Find Your Next Read" level={2} />
-          <p className="text-base-content/60 mt-2">
-            Search through our vast collection of books
-          </p>
-        </div>
-        <SmartSearch />
-      </section>
+      <ReviewList />
     </div>
   );
 };
