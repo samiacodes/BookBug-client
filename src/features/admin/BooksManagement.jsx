@@ -6,7 +6,7 @@ import BookForm from "./BookForm";
 import useApi from "../../hooks/useApi";
 
 const BooksManagement = () => {
-  const { del } = useApi();
+  const { delete: del } = useApi();
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);

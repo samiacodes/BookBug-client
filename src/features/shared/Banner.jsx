@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import SmartSearch from "../../components/SmartSearch";
 
 const book1 = "https://i.ibb.co/mVbpbGGH/book1.jpg";
 const book2 = "https://i.ibb.co/DPhkRrQ0/book-2.jpg";
@@ -50,9 +51,10 @@ const Banner = () => {
           <p className="text-lg md:text-xl text-base-content/70">
             {activeBanner.subtitle}
           </p>
-          <button className="btn btn-primary rounded-full px-8 shadow-lg hover:shadow-xl transition-all duration-300">
+          {/* <button className="btn btn-primary rounded-full px-8 shadow-lg hover:shadow-xl transition-all duration-300">
             Explore Now
-          </button>
+          </button> */}
+          <SmartSearch />
         </motion.div>
 
         {/* Right: Banner Image */}
@@ -79,7 +81,7 @@ const Banner = () => {
 
   // Fallback to original banner if no active banner
   return (
-    <div className="min-h-[80vh] max-w-7xl mx-auto px-4 py-12 flex flex-col md:flex-row items-center justify-between gap-10">
+    <div className="min-h-[80vh] max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
       
       {/* Left: Animated Text */}
       <motion.div
@@ -91,12 +93,13 @@ const Banner = () => {
         <h1 className="text-5xl md:text-6xl font-bold text-base-content">
           Discover Your Next <span className="text-primary">Adventure</span>
         </h1>
-        <p className="text-lg md:text-xl text-base-content/70">
+        {/* <p className="text-lg md:text-xl text-base-content/70">
           Dive into stories that move your heart, mind, and soul.
-        </p>
-        <button className="btn btn-primary rounded-full px-8 shadow-lg hover:shadow-xl transition-all duration-300">
+        </p> */}
+        {/* <button className="btn btn-primary rounded-full px-8 shadow-lg hover:shadow-xl transition-all duration-300">
           Explore Now
-        </button>
+        </button> */}
+        <SmartSearch />
       </motion.div>
 
       {/* Right: Dancing Images */}

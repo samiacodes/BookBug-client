@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import BorrowModal from "../../components/BorrowModal";
+import BookReviews from "../../components/BookReviews";
 import Title from "../../components/Title";
 import Spinner from "../shared/Spinner";
 import Button from "../../components/Button";
@@ -73,11 +74,13 @@ const BookDetails = () => {
                 <span className="font-semibold text-base-content/70 min-w-[100px]">Rating:</span>
                 <div className="flex items-center gap-1">
                   {[...Array(5)].map((_, i) => (
-                    <span key={i} className={`text-xl ${i < rating ? 'text-accent' : 'text-base-300'}`}>
+                    <span key={i} className={`text-xl ${i < (book?.averageRating || 0) ? 'text-accent' : 'text-base-300'}`}>
                       ★
                     </span>
                   ))}
-                  <span className="ml-2 text-base-content/70">({rating}/5)</span>
+                  <span className="ml-2 text-base-content/70">
+                    ({book?.averageRating !== undefined ? book.averageRating.toFixed(1) : '0.0'}/5) from {book?.reviewCount || 0} reviews
+                  </span>
                 </div>
               </div>
 
@@ -110,6 +113,11 @@ const BookDetails = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Reviews Section */}
+      <div className="pt-8 border-t border-base-300 mt-8">
+        <BookReviews bookId={id} />
       </div>
 
       {/* Modal */}

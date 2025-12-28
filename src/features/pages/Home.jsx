@@ -37,16 +37,16 @@ const Home = () => {
   return (
     <div className="space-y-16">
       {/* Smart Search Section */}
-      <section className="max-w-4xl mx-auto items-center px-4 pb-16">
-        <div className="text-center mb-8">
+      {/* <section className="max-w-4xl mx-auto items-center px-4 pb-16"> */}
+        {/* <div className="text-center mb-8">
           <Title text="Find Your Next Read" level={2} />
           <p className="text-base-content/60 mt-2">
             Search through our vast collection of books
           </p>
-        </div>
-          <SmartSearch />
+        </div> */}
+          {/* <SmartSearch /> */}
 
-      </section>
+      {/* </section> */}
       {/* Hero Banner */}
       <Banner />
 

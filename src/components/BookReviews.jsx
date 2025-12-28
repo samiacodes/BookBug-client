@@ -8,7 +8,7 @@ import { AuthContext } from "../contexts/AuthContexts/AuthContext";
 import { toast } from "react-toastify";
 import Title from "./Title";
 
-const ReviewList = () => {
+const BookReviews = ({ bookId }) => {
   const { user } = useContext(AuthContext);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,15 +17,11 @@ const ReviewList = () => {
 
   const API_URL = import.meta.env.VITE_API_URL || "https://book-bug-server.onrender.com";
 
-  // Fetch reviews
-  const fetchReviews = async (bookId = null) => {
+  // Fetch reviews for this specific book
+  const fetchReviews = async () => {
     setLoading(true);
     try {
-      let url = `${API_URL}/reviews`;
-      if (bookId) {
-        url += `?bookId=${bookId}`;
-      }
-      const res = await axios.get(url);
+      const res = await axios.get(`${API_URL}/reviews?bookId=${bookId}`);
       setReviews(res.data);
     } catch (err) {
       console.error("Error fetching reviews:", err);
@@ -36,22 +32,29 @@ const ReviewList = () => {
   };
 
   useEffect(() => {
-    fetchReviews(null);
-  }, []);
+    if (bookId) {
+      fetchReviews();
+    }
+  }, [bookId]);
 
   // Handle review submission
   const handleSubmit = async (reviewData) => {
     try {
+      const reviewPayload = {
+        ...reviewData,
+        bookId, // Include the bookId in the review data
+      };
+
       if (editingReview) {
         // Update existing review
         await axios.put(`${API_URL}/reviews/${editingReview._id}`, {
-          ...reviewData,
+          ...reviewPayload,
           userEmail: user?.email,
         });
         toast.success("Review updated successfully!");
       } else {
         // Create new review
-        await axios.post(`${API_URL}/reviews`, reviewData);
+        await axios.post(`${API_URL}/reviews`, reviewPayload);
         toast.success("Review created successfully!");
       }
       
@@ -93,11 +96,11 @@ const ReviewList = () => {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <Title text="Community Reviews & Blogs" level={2} />
+          <Title text="Book Reviews" level={2} />
           <p className="text-base-content/60 mt-2">
             {user
-              ? "Share your thoughts with the community"
-              : "Sign in to share your thoughts"}
+              ? "Share your thoughts about this book"
+              : "Sign in to share your thoughts about this book"}
           </p>
         </div>
         
@@ -119,7 +122,7 @@ const ReviewList = () => {
       {showForm && user && (
         <div className="bg-base-100 p-6 rounded-xl shadow-md border border-base-300">
           <h3 className="text-xl font-bold mb-4 text-base-content">
-            {editingReview ? "Edit Review" : "Create New Review"}
+            {editingReview ? "Edit Review" : "Write a Review"}
           </h3>
           <ReviewForm
             onSubmit={handleSubmit}
@@ -141,7 +144,7 @@ const ReviewList = () => {
       ) : reviews.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-base-content/60">
-            No reviews yet. Be the first to share your thoughts!
+            No reviews yet for this book. Be the first to share your thoughts!
           </p>
         </div>
       ) : (
@@ -161,4 +164,4 @@ const ReviewList = () => {
   );
 };
 
-export default ReviewList;
+export default BookReviews;

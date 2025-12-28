@@ -15,9 +15,11 @@ const UpdateBook = () => {
   const [book, setBook] = useState(null);
   const [uploading, setUploading] = useState(false);
 
+  const baseURL = import.meta.env.VITE_API_URL || 'https://book-bug-server.onrender.com';
+  
   useEffect(() => {
     axios
-      .get(`https://book-bug-server.onrender.com/books/${id}`)
+      .get(`${baseURL}/books/${id}`)
       .then((res) => {
         setBook(res.data);
         console.log("Loaded book:", res.data); 
@@ -30,7 +32,7 @@ const UpdateBook = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setBook({ ...book, [name]: name === "rating" ? parseInt(value) : value });
+    setBook({ ...book, [name]: name === "rating" || name === "quantity" ? parseInt(value) : value });
   };
 
   const handleImageUpload = (url) => {
@@ -43,7 +45,7 @@ const UpdateBook = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!book || !book.name || !book.author || !book.category) {
+    if (!book || !book.title || !book.author || !book.category) {
       toast.error("Please fill in all required fields.");
       return;
     }
@@ -93,16 +95,16 @@ const UpdateBook = () => {
 
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-medium">Book Name</span>
+              <span className="label-text font-medium">Book Title</span>
             </label>
             <input
               type="text"
-              name="name"
+              name="title"
               required
-              value={book.name}
+              value={book.title}
               onChange={handleChange}
               className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
-              placeholder="Enter book name"
+              placeholder="Enter book title"
             />
           </div>
 
@@ -140,6 +142,21 @@ const UpdateBook = () => {
             </select>
           </div>
 
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-medium">Quantity</span>
+            </label>
+            <input
+              type="number"
+              name="quantity"
+              min="0"
+              required
+              value={book.quantity}
+              onChange={handleChange}
+              className="input input-bordered w-full rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+            />
+          </div>
+          
           <div className="form-control">
             <label className="label">
               <span className="label-text font-medium">Rating (1–5)</span>
