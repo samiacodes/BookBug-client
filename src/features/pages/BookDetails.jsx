@@ -27,7 +27,7 @@ const BookDetails = () => {
   const title = book?.title || book?.name || "Untitled Book";
   const author = book?.author || "Unknown Author";
   const category = book?.category || "Uncategorized";
-  const image = book?.image || "/placeholder.jpg";
+  const image = book?.image ? book.updatedAt ? `${book.image}${book.image.includes('?') ? '&' : '?'}t=${new Date(book.updatedAt).getTime()}` : book.image : "/placeholder.jpg";
   const quantity = book?.quantity !== undefined ? book.quantity : 0;
   const rating = book?.rating !== undefined ? book.rating : 0;
   const description = book?.description || "No description available.";

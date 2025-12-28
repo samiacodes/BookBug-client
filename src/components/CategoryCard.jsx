@@ -20,7 +20,7 @@ const CategoryCard = ({ category }) => {
 
         <Link to={`/category/${categoryName}`} className="mt-4 block">
           <button className="btn btn-primary btn-sm rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2 mx-auto group">
-            View Books
+            View
             <Icon name="arrowRight" className="group-hover:translate-x-1 transition-transform duration-200" />
           </button>
         </Link>

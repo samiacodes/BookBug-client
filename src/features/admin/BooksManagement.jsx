@@ -94,7 +94,7 @@ const BooksManagement = () => {
                     <td>
                       <div className="avatar">
                         <div className="mask mask-squircle w-12 h-12">
-                          <img src={book.image || "/placeholder.jpg"} alt={book.title} />
+                          <img src={book.image ? book.updatedAt ? `${book.image}${book.image.includes('?') ? '&' : '?'}t=${new Date(book.updatedAt).getTime()}` : book.image : "/placeholder.jpg"} alt={book.title} />
                         </div>
                       </div>
                     </td>
